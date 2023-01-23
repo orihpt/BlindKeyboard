@@ -7,7 +7,8 @@ class Point {
 
   @override
   String toString() {
-    return '($x, $y)';
+    // Round the coordinates to 2 decimal places.
+    return '(${x.toStringAsFixed(2)}, ${y.toStringAsFixed(2)})';
   }
 
   // Distance to another point.

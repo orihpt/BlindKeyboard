@@ -13,8 +13,8 @@ class Typer {
   String _text = '';
 
   Typer() {
-    keyboards.add(Keyboard('en', this));
     keyboards.add(Keyboard('he', this));
+    keyboards.add(Keyboard('en', this));
     currentKeyboard = keyboards[0];
   }
 

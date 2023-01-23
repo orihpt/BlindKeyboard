@@ -26,7 +26,7 @@ class Keyboard {
   // Click on keyboard
   //
   // Please notice that the x,y coordinates are relative to the keyboard.
-  // The keyboard is MxN matrix, where M is the number of rows and N is the length of the longest row.
+  // The keyboard is Mx1 matrix, where M is the number of rows and N is the length of the longest row.
   // For example in English keyboard:
   // - (0,0) is Q
   // - (0,1) is W
@@ -42,7 +42,7 @@ class Keyboard {
 
   // Word Calculation
   void calcWord() {
-    _word = wordPoints.toString();
+    _word = wordPoints[wordPoints.length - 1].toString();
 
     // Notify typer
     typer.wordUpdatedAtKeyboard(keyboard: this);

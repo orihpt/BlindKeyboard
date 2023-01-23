@@ -48,13 +48,13 @@ class MyHomePage extends StatelessWidget {
               builder: ((context, value, child) =>
                   Text(value, style: const TextStyle(fontSize: 24)))),
 
-          Spacer(
-            key: key,
-          ),
+          const Spacer(flex: 1),
 
-          // If typer.currentKeyboard is null, then the keyboard will not be shown.
+          // If typer.currentKeyboard is null the keyboard will not be shown.
           if (typer.currentKeyboard != null)
             KeyboardWidget(keyboard: typer.currentKeyboard!),
+
+          Container(height: 80, color: Colors.blue),
         ]),
       ),
     );
