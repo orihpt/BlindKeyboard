@@ -2,6 +2,8 @@ import 'Keyboard/keyboard.dart';
 import 'Keyboard/keyboard_widget.dart';
 import 'package:flutter/material.dart';
 
+import 'Typer/typer.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final Keyboard keyboard = Keyboard('he');
+  Typer typer = Typer();
 
   MyHomePage({super.key});
 
@@ -40,19 +42,20 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          height: 150,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Expanded(
-                child: Container(),
-              ),
-              KeyboardWidget(keyboard: keyboard),
-            ],
+        child: Column(children: [
+          ValueListenableBuilder(
+              valueListenable: typer.text,
+              builder: ((context, value, child) =>
+                  Text(value, style: const TextStyle(fontSize: 24)))),
+
+          Spacer(
+            key: key,
           ),
-        ),
+
+          // If typer.currentKeyboard is null, then the keyboard will not be shown.
+          if (typer.currentKeyboard != null)
+            KeyboardWidget(keyboard: typer.currentKeyboard!),
+        ]),
       ),
     );
   }
