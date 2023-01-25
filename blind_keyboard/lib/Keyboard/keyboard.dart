@@ -1,3 +1,4 @@
+import 'package:blind_keyboard/Dictionary/dictionary.dart';
 import 'package:blind_keyboard/Other%20Classes/point.dart';
 import 'package:blind_keyboard/Typer/typer.dart';
 import 'package:flutter/foundation.dart';
@@ -8,6 +9,7 @@ import 'keyboard_layout.dart';
 // It also holds the word that is currently being typed.
 class Keyboard {
   late KeyboardLayout layout;
+  late LangDictionary dictionary;
   late String languageCode;
 
   late Typer typer;
@@ -19,6 +21,7 @@ class Keyboard {
   Keyboard(String language, this.typer) {
     layout = KeyboardLayout(language);
     languageCode = language;
+    dictionary = LangDictionary(language);
   }
 
   // # Keyboard Interactions
@@ -42,7 +45,8 @@ class Keyboard {
 
   // Word Calculation
   void calcWord() {
-    _word = wordPoints[wordPoints.length - 1].toString();
+    // Get word from dictionary
+    _word = dictionary.calcWord(wordPoints);
 
     // Notify typer
     typer.wordUpdatedAtKeyboard(keyboard: this);

@@ -14,7 +14,7 @@ class Typer {
 
   Typer() {
     keyboards.add(Keyboard('he', this));
-    keyboards.add(Keyboard('en', this));
+    //keyboards.add(Keyboard('en', this));
     currentKeyboard = keyboards[0];
   }
 

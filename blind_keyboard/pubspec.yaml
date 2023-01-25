@@ -36,6 +36,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  kdtree: ^0.2.0
+  csv: ^5.0.1
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +63,25 @@ flutter:
 
   assets:
     - assets/Lang/he/keyboard_layout.json
+    - assets/Lang/he/mat_2.csv
+    - assets/Lang/he/mat_3.csv
+    - assets/Lang/he/mat_4.csv
+    - assets/Lang/he/mat_5.csv
+    - assets/Lang/he/mat_6.csv
+    - assets/Lang/he/mat_7.csv
+    - assets/Lang/he/mat_8.csv
+    - assets/Lang/he/mat_9.csv
+    - assets/Lang/he/mat_10.csv
+    - assets/Lang/he/mat_11.csv
+    - assets/Lang/he/mat_12.csv
+    - assets/Lang/he/mat_13.csv
+    - assets/Lang/he/mat_14.csv
+    - assets/Lang/he/mat_15.csv
+    - assets/Lang/he/mat_16.csv
+    - assets/Lang/he/mat_17.csv
+    - assets/Lang/he/mat_18.csv
+    - assets/Lang/he/example.csv
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
