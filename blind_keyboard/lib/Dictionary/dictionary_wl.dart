@@ -39,7 +39,7 @@ class WLDictionary {
     final List<Map<String, dynamic>> map = [];
     for (int i = 1; i < data.length; i++) {
       final row = data[i];
-      final Map<String, dynamic> mapRow = {};
+      final Map<String, dynamic> mapRow = {"i": i - 1};
       words.add(row[0]);
       for (int j = 0; j < wordLength; j++) {
         var jStr = j.toString();
@@ -50,7 +50,7 @@ class WLDictionary {
     }
 
     // Dimentions is the list of keys in the map
-    final List<String> dimensions = [];
+    final List<String> dimensions = ["i"];
     for (int i = 0; i < wordLength; i++) {
       var iStr = i.toString();
       dimensions.add('x$iStr');
@@ -81,7 +81,7 @@ class WLDictionary {
   // Calculate word from points
   String calcWord(List<Point> points) {
     // Create map from points
-    final Map<String, dynamic> map = {};
+    final Map<String, dynamic> map = {"i": -1};
     for (int i = 0; i < wordLength; i++) {
       var iStr = i.toString();
       map['x$iStr'] = points[i].x;
@@ -92,6 +92,6 @@ class WLDictionary {
     final nearest = tree.nearest(map, 1);
 
     // Return word
-    return words[nearest[0].value];
+    return words[nearest[0][0]["i"]];
   }
 }
