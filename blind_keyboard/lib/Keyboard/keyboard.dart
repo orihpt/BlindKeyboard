@@ -41,6 +41,32 @@ class Keyboard {
     calcWord();
   }
 
+  void addSpace() {
+    typer.space();
+    _word = '';
+    wordPoints = [];
+  }
+
+  // Backspace
+  void backspace() {
+    // Remove last point
+    if (wordPoints.isNotEmpty) {
+      wordPoints.removeLast();
+      _word = _word.substring(0, _word.length - 1);
+
+      // Calculate word
+      calcWord();
+    } else {
+      typer.backspace();
+    }
+  }
+
+  // Clear word
+  void clearWord() {
+    _word = '';
+    wordPoints = [];
+  }
+
   // # Word Calculations
 
   // Word Calculation
@@ -57,5 +83,16 @@ class Keyboard {
   // Get word
   String getWord() {
     return _word;
+  }
+
+  // # Static methods
+
+  // Is language RTL
+  static bool isRTL(String languageCode) {
+    return languageCode == 'he' ||
+        languageCode == 'ar' ||
+        languageCode == 'fa' ||
+        languageCode == 'ur' ||
+        languageCode == 'yi';
   }
 }

@@ -33,6 +33,19 @@ class KeyboardWidget extends StatelessWidget {
                   clicked(context, details.localPosition.dx,
                       details.localPosition.dy);
                 },
+                onPanEnd: (details) {
+                  var xDist = details.velocity.pixelsPerSecond.dx;
+                  if (Keyboard.isRTL(keyboard.languageCode)) xDist = -xDist;
+                  //print("xDist: $xDist");
+                  if (xDist > 700) {
+                    print("space");
+                    space();
+                  }
+                  if (xDist < -700) {
+                    print("backspace");
+                    backspace();
+                  }
+                },
                 child: Column(children: [
                   Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -82,5 +95,13 @@ class KeyboardWidget extends StatelessWidget {
     double yKeyboard = (y * (keyboard.layout.layout.length - 1)) / height;
 
     keyboard.click(xKeyboard, yKeyboard);
+  }
+
+  void space() {
+    keyboard.addSpace();
+  }
+
+  void backspace() {
+    keyboard.backspace();
   }
 }

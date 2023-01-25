@@ -41,4 +41,21 @@ class Typer {
       _updateText();
     }
   }
+
+  void space() {
+    String? word = currentKeyboard?.getWord();
+    if (word != null) {
+      _text += ' $word';
+      currentKeyboard?.clearWord();
+      _updateText();
+    }
+  }
+
+  void backspace() {
+    // Remove last word
+    if (_text.isNotEmpty) {
+      _text = _text.substring(0, _text.lastIndexOf(' '));
+      _updateText();
+    }
+  }
 }
