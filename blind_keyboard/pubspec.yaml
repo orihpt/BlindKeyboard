@@ -80,7 +80,6 @@ flutter:
     - assets/Lang/he/mat_16.csv
     - assets/Lang/he/mat_17.csv
     - assets/Lang/he/mat_18.csv
-    - assets/Lang/he/example.csv
 
 
   # To add assets to your application, add an assets section, like this:

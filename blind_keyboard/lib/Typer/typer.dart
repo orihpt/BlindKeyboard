@@ -1,3 +1,4 @@
+import 'package:blind_keyboard/Dictionary/word.dart';
 import 'package:blind_keyboard/Keyboard/keyboard.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -10,7 +11,7 @@ class Typer {
   ValueNotifier<String> text = ValueNotifier<String>('hi');
 
   // The private text property, does not include current word typed.
-  String _text = '';
+  List<Word> words = [];
 
   Typer() {
     keyboards.add(Keyboard('he', this));
@@ -28,11 +29,11 @@ class Typer {
   }
 
   void _updateText() {
-    String? word = currentKeyboard?.getWord();
+    Word? word = currentKeyboard?.getWord();
     if (word != null) {
-      text.value = '$_text $word';
+      text.value = Word.wordsListToString(words + [word]);
     } else {
-      text.value = _text;
+      text.value = Word.wordsListToString(words);
     }
   }
 
@@ -43,18 +44,20 @@ class Typer {
   }
 
   void space() {
-    String? word = currentKeyboard?.getWord();
-    if (word != null) {
-      _text += ' $word';
+    Word? word = currentKeyboard?.getWord();
+    if (word != null && word.word.isNotEmpty) {
+      words.add(word);
       currentKeyboard?.clearWord();
       _updateText();
+    } else {
+      words.add(Word.punctuation());
     }
   }
 
-  void backspace() {
-    // Remove last word
-    if (_text.isNotEmpty) {
-      _text = _text.substring(0, _text.lastIndexOf(' '));
+  // To use backspace, call currentKeyboard.backspace()
+  void removeLastWord() {
+    if (words.isNotEmpty) {
+      words.removeLast();
       _updateText();
     }
   }

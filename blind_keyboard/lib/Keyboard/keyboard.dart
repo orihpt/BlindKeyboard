@@ -1,7 +1,7 @@
 import 'package:blind_keyboard/Dictionary/dictionary.dart';
+import 'package:blind_keyboard/Dictionary/word.dart';
 import 'package:blind_keyboard/Other%20Classes/point.dart';
 import 'package:blind_keyboard/Typer/typer.dart';
-import 'package:flutter/foundation.dart';
 
 import 'keyboard_layout.dart';
 
@@ -15,7 +15,7 @@ class Keyboard {
   late Typer typer;
 
   // The word that is currently being typed.
-  String _word = '';
+  Word _word = Word.nothing();
   List<Point> wordPoints = [];
 
   Keyboard(String language, this.typer) {
@@ -43,7 +43,7 @@ class Keyboard {
 
   void addSpace() {
     typer.space();
-    _word = '';
+    _word = Word.nothing();
     wordPoints = [];
   }
 
@@ -52,18 +52,17 @@ class Keyboard {
     // Remove last point
     if (wordPoints.isNotEmpty) {
       wordPoints.removeLast();
-      _word = _word.substring(0, _word.length - 1);
 
       // Calculate word
       calcWord();
     } else {
-      typer.backspace();
+      typer.removeLastWord();
     }
   }
 
   // Clear word
   void clearWord() {
-    _word = '';
+    _word = Word.nothing();
     wordPoints = [];
   }
 
@@ -81,7 +80,7 @@ class Keyboard {
   // # Keyboard APIs
 
   // Get word
-  String getWord() {
+  Word getWord() {
     return _word;
   }
 

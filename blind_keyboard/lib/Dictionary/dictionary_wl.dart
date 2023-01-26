@@ -1,3 +1,6 @@
+import 'package:blind_keyboard/Dictionary/word.dart';
+import 'package:blind_keyboard/Keyboard/keyboard.dart';
+import 'package:blind_keyboard/Keyboard/keyboard_layout.dart';
 import 'package:flutter/services.dart';
 import 'package:kdtree/kdtree.dart';
 import 'package:csv/csv.dart';
@@ -6,15 +9,18 @@ import '../Other Classes/point.dart';
 
 // Contains the words for a specific word-length.
 class WLDictionary {
-  final int wordLength;
+  late final int wordLength;
+  late final String source;
   final String language;
   late KDTree tree;
 
-  //words
+  // words
   List<String> words = [];
 
-  WLDictionary(this.wordLength, this.language) {
-    makeTree();
+  // Initialize dictionary
+  // Please call makeTree() after initializing the dictionary.
+  WLDictionary(this.wordLength, this.language, type) {
+    source = "assets/Lang/$language/$type" "_$wordLength.csv";
   }
 
   Future<void> makeTree() async {
@@ -31,7 +37,7 @@ class WLDictionary {
 
     // Read from the csv file.
 
-    final String fullPath = 'assets/Lang/$language/mat_$wordLength.csv';
+    final String fullPath = source;
     final String csvString = await rootBundle.loadString(fullPath);
     final List<List<dynamic>> data =
         const CsvToListConverter().convert(csvString);
@@ -58,7 +64,7 @@ class WLDictionary {
     }
 
     // Create distance function
-    var distance = (lhs, rhs) {
+    distance(lhs, rhs) {
       var sum = 0.0;
       for (int i = 0; i < wordLength; i++) {
         var iStr = i.toString();
@@ -69,7 +75,7 @@ class WLDictionary {
         sum += (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
       }
       return sum;
-    };
+    }
 
     // Create tree
     // Create a new tree from a list of points, a distance function, and a
@@ -79,7 +85,11 @@ class WLDictionary {
   }
 
   // Calculate word from points
-  String calcWord(List<Point> points) {
+  Word calcWord(List<Point> points) {
+    if (points.length < 2) {
+      return Word("*", 0, []);
+    }
+
     // Create map from points
     final Map<String, dynamic> map = {"i": -1};
     for (int i = 0; i < wordLength; i++) {
@@ -92,6 +102,94 @@ class WLDictionary {
     final nearest = tree.nearest(map, 1);
 
     // Return word
-    return words[nearest[0][0]["i"]];
+    return Word(words[nearest[0][0]["i"]], 0,
+        []); // FIXME: Add confidence and alternatives
   }
+
+/*
+  // Calculate possible prefixes
+  void calcPossiblePrefixes() {
+    _possiblePrefixes = WLDictionary.possiblePrefixes(language);
+    _possiblePrefixesPoints = [];
+    KeyboardLayout layout = KeyboardLayout(language);
+    for (var prefix in _possiblePrefixes) {
+      _possiblePrefixesPoints.add(layout.wordToPoints(prefix));
+    }
+
+    // Create tree from possible prefixes
+    final List<Map<String, dynamic>> map = [];
+    for (int i = 0; i < _possiblePrefixes.length; i++) {
+      final Map<String, dynamic> mapRow = {"i": i};
+      for (int j = 0; j < _possiblePrefixesPoints[i].length; j++) {
+        var jStr = j.toString();
+        mapRow['x$jStr'] = _possiblePrefixesPoints[i][j].x;
+        mapRow['y$jStr'] = _possiblePrefixesPoints[i][j].y;
+      }
+      map.add(mapRow);
+    }
+
+    // Dimentions is the list of keys in the map
+    final List<String> dimensions = ["i"];
+    for (int i = 0; i < _possiblePrefixesPoints[0].length; i++) {
+      var iStr = i.toString();
+      dimensions.add('x$iStr');
+      dimensions.add('y$iStr');
+    }
+
+    // Create distance function
+    distance(lhs, rhs) {
+      var sum = 0.0;
+      for (int i = 0; i < _possiblePrefixesPoints[0].length; i++) {
+        var iStr = i.toString();
+        var x1 = lhs['x$iStr'];
+        var y1 = lhs['y$iStr'];
+        var x2 = rhs['x$iStr'];
+        var y2 = rhs['y$iStr'];
+        sum += (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+      }
+      return sum;
+    }
+
+    // Create tree
+    // Create a new tree from a list of points, a distance function, and a
+    _possiblePrefixesTree = KDTree(map, distance, dimensions);
+
+    /* 
+    טוב עכשיו אני הולך לשחק ביט סייבר אבל בעקרון הרעיון פה הוא שנגיד מילים עם פרפיקס כמו ״כשאמרתי״ יהיו מורכבות מ ״כש״ ו״אמרתי״
+    ובעצם נגיד יש מילה עם 7 אותיות אז זה מנסה לחלק אותה ל״כש״ ול״אמרתי״ ואז להתאים את הקונפידנס של ״כש״ עם הקונפידנס של ״אמרתי״
+    (הקונפידנס יותאם גם לפי האורך, ככה שהקונפידנס של ״כש״ כפול 2/7 + הקונפידנס של ״אמרתי״ כפול 5/7 יהיה הקונפידנס של ״כשאמרתי״)
+    וככה למצוא את המילה עם הקונפידנס הכי גבוה עכשיו לא יודע כמה טוב זה יעבוד
+    אבל בכל מקרה זה עדיף מלטעון פאקינג 800 מגה של  מילים כל פעם
+    וזה יעבוד גם עם מילים שאין להן פרפיקס כמו ״אמרתי״
+    קיצר שיהיה לי בהצלחה מחר בבגרות בהיסטוריה, הלכתי לשחק ביט סייבר, ביי!
+    */
+  }
+
+  // # Static functions for languages
+
+  // Possible Prefixes
+  static List<String> possiblePrefixes(languageCode) {
+    switch (languageCode) {
+      case 'he':
+        return [
+          "כ",
+          "ל",
+          "ש",
+          "ו",
+          "כש",
+          "מ",
+          "ב",
+          "ה",
+          "כשה",
+          "מה",
+          "לכ",
+          "שה",
+          "מש"
+        ];
+      case 'en':
+        return [];
+      default:
+        return [];
+    }
+  }*/
 }
