@@ -13,14 +13,26 @@ class WLDictionary {
   late final String source;
   final String language;
   late KDTree tree;
+  late final String _type;
 
   // words
   List<String> words = [];
 
   // Initialize dictionary
   // Please call makeTree() after initializing the dictionary.
-  WLDictionary(this.wordLength, this.language, type) {
-    source = "assets/Lang/$language/$type" "_$wordLength.csv";
+  //
+  // Type = "mat" for regular words, "prefix" for prefixes.
+  WLDictionary(this.wordLength, this.language, this._type) {
+    switch (_type) {
+      case "mat":
+        source = "assets/Lang/$language/matrixes/mat_$wordLength.csv";
+        break;
+      case "prefix":
+        source = "assets/Lang/$language/prefixes/prefix_$wordLength.csv";
+        break;
+      default:
+        throw Exception("Invalid type: $_type");
+    }
   }
 
   Future<void> makeTree() async {
@@ -81,13 +93,14 @@ class WLDictionary {
     // Create a new tree from a list of points, a distance function, and a
     tree = KDTree(map, distance, dimensions);
 
-    print("Done creating tree for $wordLength letter words in $language");
+    print(
+        "Done creating tree for $_type with $wordLength letter words in $language");
   }
 
   // Calculate word from points
   Word calcWord(List<Point> points) {
-    if (points.length < 2) {
-      return Word("*", 0, []);
+    if (points.length != wordLength) {
+      return Word("*", null, []);
     }
 
     // Create map from points
@@ -99,11 +112,19 @@ class WLDictionary {
     }
 
     // Find nearest word
-    final nearest = tree.nearest(map, 1);
+    final nearest = tree.nearest(map, 7);
+    List<Word> words = [];
+    for (int i = 0; i < nearest.length; i++) {
+      var row = nearest[i];
+      double dist = row[1];
+      int wordIndex = row[0]["i"];
+      String wordStr = this.words[wordIndex];
+
+      words.add(Word(wordStr, dist, []));
+    }
 
     // Return word
-    return Word(words[nearest[0][0]["i"]], 0,
-        []); // FIXME: Add confidence and alternatives
+    return Word.getBestWord(words);
   }
 
 /*

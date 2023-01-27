@@ -1,0 +1,19 @@
+{
+    "lang": "he",
+    "keyboard_layout": [
+        [
+            "ק", "ר", "א", "ט", "ו", "ן", "ם", "פ"
+        ],
+        [
+            "ש", "ד", "ג", "כ", "ע", "י", "ח", "ל", "ך", "ף"
+        ],
+        [
+            "ז", "ס", "ב", "ה", "נ", "מ", "צ", "ת", "ץ"
+        ]
+    ],
+    "hasPrefixes": true,
+    "minimumLengthPrefix": 1,
+    "maximumLengthPrefix": 8,
+    "minimumLengthWord": 2,
+    "maximumLengthWord": 18
+}

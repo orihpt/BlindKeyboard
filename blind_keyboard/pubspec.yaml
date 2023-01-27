@@ -62,24 +62,32 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/Lang/he/keyboard_layout.json
-    - assets/Lang/he/mat_2.csv
-    - assets/Lang/he/mat_3.csv
-    - assets/Lang/he/mat_4.csv
-    - assets/Lang/he/mat_5.csv
-    - assets/Lang/he/mat_6.csv
-    - assets/Lang/he/mat_7.csv
-    - assets/Lang/he/mat_8.csv
-    - assets/Lang/he/mat_9.csv
-    - assets/Lang/he/mat_10.csv
-    - assets/Lang/he/mat_11.csv
-    - assets/Lang/he/mat_12.csv
-    - assets/Lang/he/mat_13.csv
-    - assets/Lang/he/mat_14.csv
-    - assets/Lang/he/mat_15.csv
-    - assets/Lang/he/mat_16.csv
-    - assets/Lang/he/mat_17.csv
-    - assets/Lang/he/mat_18.csv
+    - assets/Lang/he/he.json
+    - assets/Lang/he/matrixes/mat_2.csv
+    - assets/Lang/he/matrixes/mat_3.csv
+    - assets/Lang/he/matrixes/mat_4.csv
+    - assets/Lang/he/matrixes/mat_5.csv
+    - assets/Lang/he/matrixes/mat_6.csv
+    - assets/Lang/he/matrixes/mat_7.csv
+    - assets/Lang/he/matrixes/mat_8.csv
+    - assets/Lang/he/matrixes/mat_9.csv
+    - assets/Lang/he/matrixes/mat_10.csv
+    - assets/Lang/he/matrixes/mat_11.csv
+    - assets/Lang/he/matrixes/mat_12.csv
+    - assets/Lang/he/matrixes/mat_13.csv
+    - assets/Lang/he/matrixes/mat_14.csv
+    - assets/Lang/he/matrixes/mat_15.csv
+    - assets/Lang/he/matrixes/mat_16.csv
+    - assets/Lang/he/matrixes/mat_17.csv
+    - assets/Lang/he/matrixes/mat_18.csv
+    - assets/Lang/he/prefixes/prefix_1.csv
+    - assets/Lang/he/prefixes/prefix_2.csv
+    - assets/Lang/he/prefixes/prefix_3.csv
+    - assets/Lang/he/prefixes/prefix_4.csv
+    - assets/Lang/he/prefixes/prefix_5.csv
+    - assets/Lang/he/prefixes/prefix_6.csv
+    - assets/Lang/he/prefixes/prefix_7.csv
+    - assets/Lang/he/prefixes/prefix_8.csv
 
 
   # To add assets to your application, add an assets section, like this:

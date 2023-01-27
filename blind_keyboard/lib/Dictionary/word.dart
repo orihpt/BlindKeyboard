@@ -1,21 +1,31 @@
 class Word {
+  // The word.
   late final String word;
-  late final double? confidence;
-  late final List<String> alternatives;
+
+  // The distance of the word from the points tapped on keyboard.
+  late final double? dist;
+
+  // The alternatives of the word.
+  late List<Word> alternatives;
+
+  // If the word is punctuation.
   late bool isPunctuation = false;
 
-  Word(this.word, this.confidence, this.alternatives);
+  // # Constructors
+  Word(this.word, this.dist, this.alternatives);
+
+  Word.alternative(this.word, {this.isPunctuation = true});
 
   Word.punctuation() {
     word = ".";
-    confidence = 1;
-    alternatives = [","];
+    dist = 0;
+    alternatives = [Word.alternative(",", isPunctuation: true)];
     isPunctuation = true;
   }
 
   Word.nothing() {
     word = "";
-    confidence = 0;
+    dist = null;
     alternatives = [];
   }
 
@@ -38,5 +48,28 @@ class Word {
     }
 
     return str;
+  }
+
+  static Word getBestWord(List<Word> words) {
+    List<Word> alternatives = [];
+    Word bestWord = Word.nothing();
+    for (Word word in words) {
+      if (word.dist == null) {
+        continue;
+      }
+      alternatives.addAll(word.alternatives);
+      if (bestWord.dist == null || word.dist! < bestWord.dist!) {
+        if (bestWord.dist != null) {
+          alternatives.add(bestWord);
+        }
+        bestWord = word;
+      } else {
+        alternatives.add(word);
+      }
+    }
+    // Sort alternatives by distance
+    alternatives.sort((a, b) => b.dist!.compareTo(a.dist!));
+    bestWord.alternatives = alternatives;
+    return bestWord;
   }
 }
