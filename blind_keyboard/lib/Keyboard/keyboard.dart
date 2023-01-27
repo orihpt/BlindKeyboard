@@ -2,6 +2,7 @@ import 'package:blind_keyboard/Dictionary/dictionary.dart';
 import 'package:blind_keyboard/Dictionary/word.dart';
 import 'package:blind_keyboard/Other%20Classes/point.dart';
 import 'package:blind_keyboard/Typer/typer.dart';
+import 'package:flutter/material.dart';
 
 import 'keyboard_layout.dart';
 
@@ -18,10 +19,16 @@ class Keyboard {
   Word _word = Word.nothing();
   List<Point> wordPoints = [];
 
+  // The loading progress of the dictionary.
+  ValueNotifier<double> loadingProgress = ValueNotifier<double>(0);
+
   Keyboard(String language, this.typer) {
     layout = KeyboardLayout(language);
     languageCode = language;
     dictionary = LangDictionary(language);
+    dictionary.loadProgress.addListener(() {
+      loadingProgress.value = dictionary.loadProgress.value;
+    });
   }
 
   // # Keyboard Interactions
@@ -80,7 +87,10 @@ class Keyboard {
   // # Keyboard APIs
 
   // Get word
-  Word getWord() {
+  Word? getWord() {
+    if (_word.dist == null) {
+      return null;
+    }
     return _word;
   }
 

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 // Typer is the class that holds the written text and keyboards.
 class Typer {
   List<Keyboard> keyboards = [];
-  Keyboard? currentKeyboard;
+  late Keyboard currentKeyboard;
 
   // The public text property, includes current word typed.
   ValueNotifier<String> text = ValueNotifier<String>('hi');
@@ -31,7 +31,7 @@ class Typer {
   }
 
   void _updateText() {
-    Word? word = currentKeyboard?.getWord();
+    Word? word = currentKeyboard.getWord();
     if (word != null) {
       text.value = Word.wordsListToString(words + [word]);
     } else {
@@ -47,17 +47,20 @@ class Typer {
   }
 
   void space() {
-    Word? word = currentKeyboard?.getWord();
+    Word? word = currentKeyboard.getWord();
     if (word != null && word.word.isNotEmpty) {
       words.add(word);
-      currentKeyboard?.clearWord();
+      currentKeyboard.clearWord();
       _updateText();
     } else {
       words.add(Word.punctuation());
     }
   }
 
-  // To use backspace, call currentKeyboard.backspace()
+  void backSpace() {
+    currentKeyboard.backspace();
+  }
+
   void removeLastWord() {
     if (words.isNotEmpty) {
       words.removeLast();

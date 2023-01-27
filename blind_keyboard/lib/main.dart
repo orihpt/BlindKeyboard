@@ -49,19 +49,14 @@ class MyHomePage extends StatelessWidget {
                 controller: typer.textEditingController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'הקלידו כאן',
+                  hintText: 'הקלידו כאן...',
                 ),
                 readOnly: true,
                 showCursor: true,
                 textAlign: TextAlign.right,
               )),
-
           const Spacer(flex: 1),
-
-          // If typer.currentKeyboard is null the keyboard will not be shown.
-          if (typer.currentKeyboard != null)
-            KeyboardWidget(keyboard: typer.currentKeyboard!),
-
+          KeyboardWidget(keyboard: typer.currentKeyboard),
           Container(height: 80, color: Colors.blue),
         ]),
       ),

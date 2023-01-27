@@ -15,5 +15,9 @@
     "minimumLengthPrefix": 1,
     "maximumLengthPrefix": 8,
     "minimumLengthWord": 2,
-    "maximumLengthWord": 18
+    "maximumLengthWord": 18,
+    "localizedText": {
+        "space": "רווח",
+        "loading": "טוען את המקלדת העברית..."
+    }
 }

@@ -11,7 +11,7 @@ class KeyboardWidget extends StatelessWidget {
 
   static const double verticalPadding = 20.0;
   static const double letterWidth = 20.0;
-  static const double letterHeight = 28.0;
+  static const double letterHeight = 32.0;
 
   @override
   Widget build(BuildContext context) {
@@ -26,61 +26,81 @@ class KeyboardWidget extends StatelessWidget {
 
     return Container(
         color: Colors.black,
-        child: Center(
-            child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTapDown: (TapDownDetails details) {
-                  clicked(context, details.localPosition.dx,
-                      details.localPosition.dy);
-                },
-                onPanEnd: (details) {
-                  var xDist = details.velocity.pixelsPerSecond.dx;
-                  if (Keyboard.isRTL(keyboard.languageCode)) xDist = -xDist;
-                  //print("xDist: $xDist");
-                  if (xDist > 700) {
-                    print("space");
-                    space();
-                  }
-                  if (xDist < -700) {
-                    print("backspace");
-                    backspace();
-                  }
-                },
-                child: Column(children: [
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: keyboard.layout.layout.map((row) {
-                        return Column(
-                          children: <Widget>[
-                            const SizedBox(height: verticalPadding),
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: row.map((letter) {
-                                  // Get the global key of the letter.
-                                  // If it does not exist, create it.
-                                  final key =
-                                      lettersKeys[letter] ??= GlobalKey();
+        child: ValueListenableBuilder(
+            valueListenable: keyboard.loadingProgress,
+            builder: (context, value, child) {
+              if (value == 1) {
+                return _createKeyboard(context);
+              } else {
+                return _createLoadingWidget(context, value);
+              }
+            }));
+  }
 
-                                  return Container(
-                                      color: Colors.black,
-                                      key: key,
-                                      child: SizedBox(
-                                          width: letterWidth,
-                                          height: letterHeight,
-                                          child: Text(letter,
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontWeight:
-                                                      FontWeight.bold))));
-                                }).toList()),
-                          ],
-                        );
-                      }).toList()),
-                  const SizedBox(height: verticalPadding),
-                ]))));
+  Widget _createLoadingWidget(BuildContext context, double progress) {
+    return SizedBox(
+        height: matchingHeight(context),
+        child: Center(
+            child: SizedBox(
+                width: 100,
+                height: 100,
+                child: CircularProgressIndicator(
+                    value: progress, strokeWidth: 10))));
+  }
+
+  Widget _createKeyboard(BuildContext context) {
+    return Center(
+        child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTapDown: (TapDownDetails details) {
+              clicked(
+                  context, details.localPosition.dx, details.localPosition.dy);
+            },
+            onPanEnd: (details) {
+              var xDist = details.velocity.pixelsPerSecond.dx;
+              if (Keyboard.isRTL(keyboard.languageCode)) xDist = -xDist;
+              //print("xDist: $xDist");
+              if (xDist > 700) {
+                print("space");
+                space();
+              }
+              if (xDist < -700) {
+                print("backspace");
+                backspace();
+              }
+            },
+            child: Column(children: [
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: keyboard.layout.layout.map((row) {
+                    return Column(
+                      children: <Widget>[
+                        const SizedBox(height: verticalPadding),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: row.map((letter) {
+                              // Get the global key of the letter.
+                              // If it does not exist, create it.
+                              final key = lettersKeys[letter] ??= GlobalKey();
+
+                              return Container(
+                                  color: Colors.black,
+                                  key: key,
+                                  child: SizedBox(
+                                      width: letterWidth,
+                                      height: letterHeight,
+                                      child: Text(letter,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold))));
+                            }).toList()),
+                      ],
+                    );
+                  }).toList()),
+              const SizedBox(height: verticalPadding),
+            ])));
   }
 
   void clicked(BuildContext context, double x, double y) {
@@ -92,9 +112,14 @@ class KeyboardWidget extends StatelessWidget {
     height = height - 2 * verticalPadding - letterHeight;
 
     double xKeyboard = x / width;
-    double yKeyboard = (y * (keyboard.layout.layout.length - 1)) / height;
+    double yKeyboard = y * (keyboard.layout.layout.length - 1) / height;
 
     keyboard.click(xKeyboard, yKeyboard);
+  }
+
+  double matchingHeight(BuildContext context) {
+    int rows = keyboard.layout.layout.length;
+    return rows * letterHeight + (rows + 1) * verticalPadding;
   }
 
   void space() {

@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:blind_keyboard/Dictionary/dictionary_wl.dart';
 import 'package:blind_keyboard/Dictionary/word.dart';
 import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../Other Classes/point.dart';
@@ -24,9 +25,11 @@ class LangDictionary {
 
   // Is loaded
   bool isLoaded = false;
+  ValueNotifier<double> loadProgress = ValueNotifier(0);
 
   LangDictionary(this.language) {
-    load();
+    load() // Load dictionary
+        .then((_) => isLoaded = true);
   }
 
   Future<void> load() async {
@@ -46,6 +49,9 @@ class LangDictionary {
       final WLDictionary dictionary = WLDictionary(i, language, "mat");
       await dictionary.makeTree();
       dict.add(dictionary);
+      loadProgress.value = 0.9 *
+          (i - _minimumLengthWord) /
+          (_maximumLengthWord - _minimumLengthWord);
     }
 
     // Make dictionary for prefixes
@@ -55,10 +61,14 @@ class LangDictionary {
         final WLDictionary dictionary = WLDictionary(i, language, "prefix");
         await dictionary.makeTree();
         prefixDict.add(dictionary);
+        loadProgress.value = 0.1 *
+                (i - _minimumLengthPrefix) /
+                (_maximumLengthPrefix - _minimumLengthPrefix) +
+            0.9;
       }
     }
 
-    isLoaded = true;
+    loadProgress.value = 1;
     print("Loaded $language dictionary");
   }
 
