@@ -43,10 +43,18 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Column(children: [
-          ValueListenableBuilder(
-              valueListenable: typer.text,
-              builder: ((context, value, child) =>
-                  Text(value, style: const TextStyle(fontSize: 24)))),
+          Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: TextField(
+                controller: typer.textEditingController,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'הקלידו כאן',
+                ),
+                readOnly: true,
+                showCursor: true,
+                textAlign: TextAlign.right,
+              )),
 
           const Spacer(flex: 1),
 

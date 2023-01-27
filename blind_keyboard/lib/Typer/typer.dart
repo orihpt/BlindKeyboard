@@ -13,6 +13,8 @@ class Typer {
   // The private text property, does not include current word typed.
   List<Word> words = [];
 
+  TextEditingController textEditingController = TextEditingController();
+
   Typer() {
     keyboards.add(Keyboard('he', this));
     //keyboards.add(Keyboard('en', this));
@@ -35,6 +37,7 @@ class Typer {
     } else {
       text.value = Word.wordsListToString(words);
     }
+    textEditingController.text = text.value;
   }
 
   void wordUpdatedAtKeyboard({required Keyboard keyboard}) {
