@@ -16,7 +16,7 @@ class Keyboard {
   late Typer typer;
 
   // The word that is currently being typed.
-  WordGroup _word = WordGroup.nothing();
+  WordGroup? _word = null;
   List<Point> wordPoints = [];
 
   // The loading progress of the dictionary.
@@ -45,7 +45,9 @@ class Keyboard {
   void click(double x, double y) {
     // Add point to points list
     wordPoints.add(Point(x, y));
-    calcWord();
+
+    // Notify typer
+    typer.wordUpdatedAtKeyboard(keyboard: this);
   }
 
   void addSpace() {
@@ -88,8 +90,8 @@ class Keyboard {
 
   // Get word
   WordGroup? getWord() {
-    if (_word.isEmpty()) {
-      return null;
+    if (_word == null || _word!.isEmpty()) {
+      return WordGroup.toBeCalculated(wordPoints.length);
     }
     return _word;
   }

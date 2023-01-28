@@ -93,6 +93,7 @@ class Typer {
   }
 
   void space() {
+    currentKeyboard.calcWord();
     WordGroup? word = currentKeyboard.getWord();
     if (word != null && word.getWord().word.isNotEmpty) {
       words.add(word);

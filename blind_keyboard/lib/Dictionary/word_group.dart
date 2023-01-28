@@ -45,6 +45,10 @@ class WordGroup {
     words = [Word.nothing()];
   }
 
+  WordGroup.toBeCalculated(int wordLength) {
+    words = [Word("*" * wordLength, null)];
+  }
+
   // # Word
   Word getWord() {
     return words[index.value];
@@ -98,17 +102,22 @@ class WordGroup {
 
   static WordGroup flatWordsList(List<WordGroup> wordsList,
       {isPunctuation = false}) {
-    List<Word> words = [];
+    Map<String, Word> wordsMap = {};
     for (WordGroup wordsObj in wordsList) {
       for (Word wordObj in wordsObj.words) {
         if (wordObj.dist != null) {
-          words.add(wordObj);
+          wordsMap[wordObj.word] = wordObj;
         }
       }
     }
 
+    var words = wordsMap.values.toList();
+
     // Sort words by distance
     words.sort((a, b) => a.dist!.compareTo(b.dist!));
+
+    // Only first 10
+    words = words.sublist(0, words.length > 10 ? 10 : words.length);
 
     return WordGroup(words, isPunctuation: isPunctuation);
   }

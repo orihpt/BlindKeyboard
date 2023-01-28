@@ -79,7 +79,7 @@ class LangDictionary {
       return WordGroup.nothing();
     }
 
-    if (points.length < 2) {
+    if (points.length < _minimumLengthWord) {
       return WordGroup.nothing();
     }
 
