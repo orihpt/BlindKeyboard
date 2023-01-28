@@ -16,7 +16,11 @@ class Typer {
   // The words that were typed, does not include the current word typed.
   List<WordGroup> words = [];
 
+  // The text field of all of the text.
   TextEditingController textEditingController = TextEditingController();
+
+  // The text field of the current word only.
+  TextEditingController keyboardEditingController = TextEditingController();
 
   // Text to speech
   final TextToSpeech _textToSpeech = TextToSpeech();
@@ -44,6 +48,10 @@ class Typer {
       text.value = WordGroup.wordsListToString(words);
     }
     textEditingController.text = text.value;
+    keyboardEditingController.text =
+        currentKeyboard.getWord()?.getWord().word ??
+            getLastWord()?.getWord().word ??
+            '?';
   }
 
   void wordUpdatedAtKeyboard({required Keyboard keyboard}) {
@@ -128,5 +136,15 @@ class Typer {
 
   void _speakWord(Word word) {
     _textToSpeech.speak(word.word);
+  }
+
+  void nextLanguage() {
+    int index = keyboards.indexOf(currentKeyboard);
+    index++;
+    if (index >= keyboards.length) {
+      index = 0;
+    }
+    currentKeyboard = keyboards[index];
+    _updateText();
   }
 }

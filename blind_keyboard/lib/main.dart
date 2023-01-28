@@ -1,4 +1,3 @@
-import 'Keyboard/keyboard.dart';
 import 'Keyboard/keyboard_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -59,7 +58,6 @@ class MyHomePage extends StatelessWidget {
               )),
           const Spacer(flex: 1),
           KeyboardWidget(keyboard: typer.currentKeyboard),
-          Container(height: 80, color: Colors.blue),
         ]),
       ),
     );

@@ -12,6 +12,8 @@ class KeyboardWidget extends StatelessWidget {
   static const double verticalPadding = 20.0;
   static const double letterWidth = 20.0;
   static const double letterHeight = 32.0;
+  static const double wordTypingHeight = 55.0;
+  static const double bottomBarHeight = 50.0;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,11 @@ class KeyboardWidget extends StatelessWidget {
             valueListenable: keyboard.loadingProgress,
             builder: (context, value, child) {
               if (value == 1) {
-                return _createKeyboard(context);
+                return Column(children: [
+                  _createWordTyping(context),
+                  _createKeyboard(context),
+                  _createBottomBar(context)
+                ]);
               } else {
                 return _createLoadingWidget(context, value);
               }
@@ -117,6 +123,65 @@ class KeyboardWidget extends StatelessWidget {
             ])));
   }
 
+  Widget _createWordTyping(BuildContext context) {
+    return SizedBox(
+        height: wordTypingHeight,
+        child: Center(
+            child: TextField(
+                controller: keyboard.typer.keyboardEditingController,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white, fontSize: 40))));
+  }
+
+  Widget _createBottomBar(BuildContext context) {
+    // Contains backspace, space bar and earth icon to change language.
+    return SizedBox(
+        height: bottomBarHeight,
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          SizedBox(
+              width: 100,
+              height: 40,
+              child: IconButton(
+                  onPressed: () {
+                    keyboard.typer.nextLanguage();
+                  },
+                  iconSize: 40,
+                  padding: const EdgeInsets.all(0),
+                  icon: const Icon(Icons.language,
+                      color: Colors.white, size: 40))),
+
+          // Space bar
+          Expanded(
+              child: TextButton(
+                  onPressed: () {
+                    space();
+                  },
+                  child: Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                      child: const Center(
+                          child: Text("Space",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold)))))),
+
+          SizedBox(
+              width: 100,
+              height: 40,
+              child: IconButton(
+                  onPressed: () {
+                    backspace();
+                  },
+                  iconSize: 40,
+                  padding: const EdgeInsets.all(0),
+                  icon: const Icon(Icons.backspace,
+                      color: Colors.white, size: 40))),
+        ]));
+  }
+
   void clicked(BuildContext context, double x, double y) {
     // This code section converts the coordinates of the click to the coordinates of the keyboard.
     double width = context.size?.width ?? 0;
@@ -133,7 +198,10 @@ class KeyboardWidget extends StatelessWidget {
 
   double matchingHeight(BuildContext context) {
     int rows = keyboard.layout.layout.length;
-    return rows * letterHeight + (rows + 1) * verticalPadding;
+    return rows * letterHeight +
+        (rows + 1) * verticalPadding +
+        wordTypingHeight +
+        bottomBarHeight;
   }
 
   void space() {

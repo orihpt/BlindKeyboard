@@ -16,7 +16,7 @@ class Keyboard {
   late Typer typer;
 
   // The word that is currently being typed.
-  WordGroup? _word = null;
+  WordGroup? _word;
   List<Point> wordPoints = [];
 
   // The loading progress of the dictionary.
@@ -46,8 +46,7 @@ class Keyboard {
     // Add point to points list
     wordPoints.add(Point(x, y));
 
-    // Notify typer
-    typer.wordUpdatedAtKeyboard(keyboard: this);
+    wordUpdated();
   }
 
   void addSpace() {
@@ -73,6 +72,7 @@ class Keyboard {
   void clearWord() {
     _word = WordGroup.nothing();
     wordPoints = [];
+    wordUpdated();
   }
 
   // # Word Calculations
@@ -82,14 +82,16 @@ class Keyboard {
     // Get word from dictionary
     _word = dictionary.calcWord(wordPoints);
 
-    // Notify typer
-    typer.wordUpdatedAtKeyboard(keyboard: this);
+    wordUpdated();
   }
 
   // # Keyboard APIs
 
   // Get word
   WordGroup? getWord() {
+    if (wordPoints.isEmpty) {
+      return null;
+    }
     if (_word == null || _word!.isEmpty()) {
       return WordGroup.toBeCalculated(wordPoints.length);
     }
@@ -99,6 +101,10 @@ class Keyboard {
   // Is typing
   bool isTyping() {
     return wordPoints.isNotEmpty;
+  }
+
+  void wordUpdated() {
+    typer.wordUpdatedAtKeyboard(keyboard: this);
   }
 
   // # Static methods
