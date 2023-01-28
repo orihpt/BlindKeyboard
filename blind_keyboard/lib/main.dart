@@ -39,27 +39,35 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(children: [
-          Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: TextField(
-                controller: typer.textEditingController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'הקלידו כאן...',
+    return Builder(
+      builder: (BuildContext context) {
+        final safeArea = MediaQuery.of(context).padding;
+        return Scaffold(
+          body: SafeArea(
+            bottom: false,
+            child: Column(children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: TextField(
+                  controller: typer.textEditingController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'הקלידו כאן...',
+                  ),
+                  readOnly: true,
+                  showCursor: true,
+                  textAlign: TextAlign.right,
                 ),
-                readOnly: true,
-                showCursor: true,
-                textAlign: TextAlign.right,
-              )),
-          const Spacer(flex: 1),
-          KeyboardWidget(keyboard: typer.currentKeyboard),
-        ]),
-      ),
+              ),
+              const Spacer(flex: 1),
+              KeyboardWidget(keyboard: typer.currentKeyboard),
+              Container(color: Colors.black, height: safeArea.bottom),
+            ]),
+          ),
+        );
+      },
     );
   }
 }
