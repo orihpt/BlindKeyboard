@@ -21,12 +21,25 @@ class WordGroup {
 
   WordGroup.punctuation() {
     isPunctuation = true;
-    List<String> punctuationList = [".", ",", "!", "?", ":", ";"];
+    List<String> punctuationList = [
+      "👍",
+      "❤️",
+      "🥳",
+      "😃",
+      ".",
+      ",",
+      "!",
+      "?",
+      ":",
+      ";"
+    ];
     // Create a word for each punctuation
     words = [];
     for (String punctuation in punctuationList) {
       words.add(Word(punctuation, 0));
     }
+    // set index to the index of . dynamically
+    index.value = punctuationList.indexOf(".");
   }
 
   WordGroup.combine(WordGroup a, WordGroup b) {
