@@ -143,7 +143,7 @@ class KeyboardWidget extends StatelessWidget {
               height: 40,
               child: IconButton(
                   onPressed: () {
-                    keyboard.typer.nextLanguage();
+                    keyboard.typer.nextKeyboard();
                   },
                   iconSize: 40,
                   padding: const EdgeInsets.all(0),

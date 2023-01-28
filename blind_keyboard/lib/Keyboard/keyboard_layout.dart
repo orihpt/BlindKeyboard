@@ -31,33 +31,6 @@ class KeyboardLayout {
 
   // Get point for a letter
   Point letterToPoint(String letter) {
-    /*
-    This is a matlab code that enters the points of each letter into a dictionary M.
-
-    keyboardLayout = "קראטוןםפ,שדגכעיחלךף,זסבהנמצתץ";
-lang = "he";
-langLettersRegex = "א-ת";
-wordsFile = "wordslist.txt";
-
-% Code
-w = readlines(wordsFile);
-
-keyboard = split(keyboardLayout, ",");
-rowsLengths = strlength(keyboard);
-M = containers.Map('KeyType','char','ValueType','any');
-
-% Calculate point for each letter
-for i = 1:numel(keyboard)
-    row = split(keyboard(i), "")';
-    row = row(2:end-1);
-    rowLen = numel(row);
-    for j = 1:rowLen
-        letter = row(j);
-        M(letter) = [j/(rowLen+1), i-1];
-    end
-end
-    */
-
     // Find the letter in the layout
     for (int i = 0; i < layout.length; i++) {
       for (int j = 0; j < layout[i].length; j++) {

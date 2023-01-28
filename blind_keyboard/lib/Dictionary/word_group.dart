@@ -16,7 +16,9 @@ class WordGroup {
 
   WordGroup.sorted(this.words, {this.isPunctuation = false}) {
     // Sort words by distance (so that index 0 is the closest word)
-    words.sort((a, b) => a.dist!.compareTo(b.dist!));
+    words.sort((a, b) {
+      return a.dist!.compareTo(b.dist!);
+    });
   }
 
   WordGroup.punctuation() {

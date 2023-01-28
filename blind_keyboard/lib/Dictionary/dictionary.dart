@@ -26,10 +26,7 @@ class LangDictionary {
   bool isLoaded = false;
   ValueNotifier<double> loadProgress = ValueNotifier(0);
 
-  LangDictionary(this.language) {
-    load() // Load dictionary
-        .then((_) => isLoaded = true);
-  }
+  LangDictionary(this.language);
 
   Future<void> load() async {
     // Load language information
@@ -68,6 +65,7 @@ class LangDictionary {
     }
 
     loadProgress.value = 1;
+    isLoaded = true;
     print("Loaded $language dictionary");
   }
 
@@ -75,6 +73,8 @@ class LangDictionary {
   WordGroup calcWord(List<Point> points, {bool allowPrefix = true}) {
     // Check if dictionary is loaded
     if (!isLoaded) {
+      // Flutter warning
+      print("WARNING: Dictionary is not loaded.");
       return WordGroup.nothing();
     }
 

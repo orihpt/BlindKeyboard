@@ -8,7 +8,7 @@ import '../Dictionary/word.dart';
 // Typer is the class that holds the written text and keyboards.
 class Typer {
   List<Keyboard> keyboards = [];
-  late Keyboard currentKeyboard;
+  late ValueNotifier<Keyboard> currentKeyboard;
 
   // The public text property, includes current word typed.
   ValueNotifier<String> text = ValueNotifier<String>('');
@@ -27,21 +27,19 @@ class Typer {
 
   Typer() {
     keyboards.add(Keyboard('he', this));
-    //keyboards.add(Keyboard('en', this));
-    currentKeyboard = keyboards[0];
+    keyboards.add(Keyboard('en', this));
+    currentKeyboard = ValueNotifier<Keyboard>(keyboards[0]);
+    _load();
   }
 
-  void changeKeyboard(String language) {
+  Future<void> _load() async {
     for (Keyboard keyboard in keyboards) {
-      if (keyboard.languageCode == language) {
-        currentKeyboard = keyboard;
-        break;
-      }
+      await keyboard.dictionary.load();
     }
   }
 
   void _updateText() {
-    WordGroup? word = currentKeyboard.getWord();
+    WordGroup? word = currentKeyboard.value.getWord();
     if (word != null) {
       text.value = WordGroup.wordsListToString(words + [word]);
     } else {
@@ -49,19 +47,19 @@ class Typer {
     }
     textEditingController.text = text.value;
     keyboardEditingController.text =
-        currentKeyboard.getWord()?.getWord().word ??
+        currentKeyboard.value.getWord()?.getWord().word ??
             getLastWord()?.getWord().word ??
             '';
   }
 
   void wordUpdatedAtKeyboard({required Keyboard keyboard}) {
-    if (keyboard == currentKeyboard) {
+    if (keyboard == currentKeyboard.value) {
       _updateText();
     }
   }
 
   bool nextAlternative() {
-    if (currentKeyboard.isTyping()) {
+    if (currentKeyboard.value.isTyping()) {
       return false;
     }
     // Get the last word
@@ -81,7 +79,7 @@ class Typer {
   }
 
   bool previousAlternative() {
-    if (currentKeyboard.isTyping()) {
+    if (currentKeyboard.value.isTyping()) {
       return false;
     }
     // Get the last word
@@ -101,11 +99,11 @@ class Typer {
   }
 
   void space() {
-    currentKeyboard.calcWord();
-    WordGroup? word = currentKeyboard.getWord();
+    currentKeyboard.value.calcWord();
+    WordGroup? word = currentKeyboard.value.getWord();
     if (word != null && word.getWord().word.isNotEmpty) {
       words.add(word);
-      currentKeyboard.clearWord();
+      currentKeyboard.value.clearWord();
       _updateText();
     } else {
       word = WordGroup.punctuation();
@@ -118,7 +116,7 @@ class Typer {
   }
 
   void backSpace() {
-    currentKeyboard.backspace();
+    currentKeyboard.value.backspace();
   }
 
   void removeLastWord() {
@@ -137,8 +135,12 @@ class Typer {
   }
 
   void _speakWord(Word word) {
+    _speakText(word.word);
+  }
+
+  void _speakText(String text) {
     _textToSpeech.stop();
-    switch (currentKeyboard.languageCode) {
+    switch (currentKeyboard.value.languageCode) {
       case 'he':
         _textToSpeech.setLanguage('he-IL');
         break;
@@ -146,16 +148,24 @@ class Typer {
         _textToSpeech.setLanguage('en-US');
         break;
     }
-    _textToSpeech.speak(word.word);
+    _textToSpeech.speak(text);
   }
 
-  void nextLanguage() {
-    int index = keyboards.indexOf(currentKeyboard);
+  void nextKeyboard() {
+    int index = keyboards.indexOf(currentKeyboard.value);
     index++;
     if (index >= keyboards.length) {
       index = 0;
     }
-    currentKeyboard = keyboards[index];
+    currentKeyboard.value = keyboards[index];
+    switch (currentKeyboard.value.languageCode) {
+      case 'he':
+        _speakText("מקלדת עברית");
+        break;
+      case 'en':
+        _speakText("English keyboard");
+        break;
+    }
     _updateText();
   }
 }

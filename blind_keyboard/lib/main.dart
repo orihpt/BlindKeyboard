@@ -62,7 +62,11 @@ class MyHomePage extends StatelessWidget {
                 ),
               ),
               const Spacer(flex: 1),
-              KeyboardWidget(keyboard: typer.currentKeyboard),
+              ValueListenableBuilder(
+                  valueListenable: typer.currentKeyboard,
+                  builder: (context, value, child) {
+                    return KeyboardWidget(keyboard: value);
+                  }),
               Container(color: Colors.black, height: safeArea.bottom),
             ]),
           ),

@@ -98,6 +98,7 @@ class WLDictionary {
 
   // Calculate word from points
   WordGroup calcWord(List<Point> points) {
+    // hello	0.6	0.125	0.272727272727273	0	0.9	0.125	0.9	0.125	0.818181818181818	0
     if (points.length != wordLength) {
       return WordGroup.nothing();
     }

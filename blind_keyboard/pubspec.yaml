@@ -89,6 +89,26 @@ flutter:
     - assets/Lang/he/prefixes/prefix_6.csv
     - assets/Lang/he/prefixes/prefix_7.csv
     - assets/Lang/he/prefixes/prefix_8.csv
+    - assets/Lang/en/en.json
+    - assets/Lang/en/matrixes/mat_1.csv
+    - assets/Lang/en/matrixes/mat_2.csv
+    - assets/Lang/en/matrixes/mat_3.csv
+    - assets/Lang/en/matrixes/mat_4.csv
+    - assets/Lang/en/matrixes/mat_5.csv
+    - assets/Lang/en/matrixes/mat_6.csv
+    - assets/Lang/en/matrixes/mat_7.csv
+    - assets/Lang/en/matrixes/mat_8.csv
+    - assets/Lang/en/matrixes/mat_9.csv
+    - assets/Lang/en/matrixes/mat_10.csv
+    - assets/Lang/en/matrixes/mat_11.csv
+    - assets/Lang/en/matrixes/mat_12.csv
+    - assets/Lang/en/matrixes/mat_13.csv
+    - assets/Lang/en/matrixes/mat_14.csv
+    - assets/Lang/en/matrixes/mat_15.csv
+    - assets/Lang/en/matrixes/mat_16.csv
+    - assets/Lang/en/matrixes/mat_17.csv
+    - assets/Lang/en/matrixes/mat_18.csv
+
 
 
   # To add assets to your application, add an assets section, like this:

@@ -1,0 +1,17 @@
+{
+    "lang": "en",
+    "keyboard_layout": [
+        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+        ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
+        ["z", "x", "c", "v", "b", "n", "m"]
+    ],
+    "hasPrefixes": false,
+    "minimumLengthPrefix": 0,
+    "maximumLengthPrefix": 0,
+    "minimumLengthWord": 1,
+    "maximumLengthWord": 18,
+    "localizedText": {
+        "space": "Space",
+        "loading": "Loading the English keyboard..."
+    }
+}
