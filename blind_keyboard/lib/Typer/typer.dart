@@ -51,7 +51,7 @@ class Typer {
     keyboardEditingController.text =
         currentKeyboard.getWord()?.getWord().word ??
             getLastWord()?.getWord().word ??
-            '?';
+            '';
   }
 
   void wordUpdatedAtKeyboard({required Keyboard keyboard}) {
@@ -107,12 +107,14 @@ class Typer {
       words.add(word);
       currentKeyboard.clearWord();
       _updateText();
-
-      // Speak the word
-      _speakWord(word.getWord());
     } else {
-      words.add(WordGroup.punctuation());
+      word = WordGroup.punctuation();
+      words.add(word);
+      _updateText();
     }
+
+    // Speak the word
+    _speakWord(word.getWord());
   }
 
   void backSpace() {
