@@ -192,9 +192,9 @@ class KeyboardWidget extends StatelessWidget {
     height = height - 2 * verticalPadding - letterHeight;
 
     double xKeyboard = x / width;
-    double yKeyboard = (keyboard.layout.layout.length - 1) * y / height;
+    double yKeyboard = y / height;
 
-    // print("Clicked at ($xKeyboard, $yKeyboard)");
+    print("Clicked at ($xKeyboard, $yKeyboard)");
 
     keyboard.click(xKeyboard, yKeyboard);
   }
