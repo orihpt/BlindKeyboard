@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:blind_keyboard/Dictionary/dictionary_wl.dart';
 import 'package:blind_keyboard/Dictionary/word_group.dart';
-import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

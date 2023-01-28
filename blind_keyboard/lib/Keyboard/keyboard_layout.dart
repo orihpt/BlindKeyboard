@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import '../Other Classes/point.dart';
 
 class KeyboardLayout {
