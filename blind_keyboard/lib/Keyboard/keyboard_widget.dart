@@ -65,25 +65,22 @@ class KeyboardWidget extends StatelessWidget {
 
               if (Keyboard.isRTL(keyboard.languageCode)) xDist = -xDist;
               print("xDist: $xDist, yDist: $yDist");
-              if (xDist > 700) {
-                print("space");
-                space();
-                return;
-              }
-              if (xDist < -700) {
-                print("backspace");
-                backspace();
-                return;
-              }
-              if (yDist > 700) {
-                print("next alternative");
-                keyboard.typer.nextAlternative();
-                return;
-              }
-              if (yDist < -700) {
-                print("next alternative");
-                keyboard.typer.previousAlternative();
-                return;
+              if (xDist.abs() > yDist.abs() && xDist.abs() > 700) {
+                if (xDist > 0) {
+                  print("space");
+                  space();
+                } else {
+                  print("backspace");
+                  backspace();
+                }
+              } else if (yDist.abs() > 700) {
+                if (yDist > 0) {
+                  print("next alternative");
+                  keyboard.typer.nextAlternative();
+                } else {
+                  print("previous alternative");
+                  keyboard.typer.previousAlternative();
+                }
               }
             },
             child: Column(children: [

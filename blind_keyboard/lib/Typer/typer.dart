@@ -1,6 +1,9 @@
-import 'package:blind_keyboard/Dictionary/words.dart';
+import 'package:blind_keyboard/Dictionary/word_group.dart';
 import 'package:blind_keyboard/Keyboard/keyboard.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:text_to_speech/text_to_speech.dart';
+
+import '../Dictionary/word.dart';
 
 // Typer is the class that holds the written text and keyboards.
 class Typer {
@@ -8,12 +11,15 @@ class Typer {
   late Keyboard currentKeyboard;
 
   // The public text property, includes current word typed.
-  ValueNotifier<String> text = ValueNotifier<String>('hi');
+  ValueNotifier<String> text = ValueNotifier<String>('');
 
-  // The private text property, does not include current word typed.
-  List<Words> words = [];
+  // The words that were typed, does not include the current word typed.
+  List<WordGroup> words = [];
 
   TextEditingController textEditingController = TextEditingController();
+
+  // Text to speech
+  final TextToSpeech _textToSpeech = TextToSpeech();
 
   Typer() {
     keyboards.add(Keyboard('he', this));
@@ -31,11 +37,11 @@ class Typer {
   }
 
   void _updateText() {
-    Words? word = currentKeyboard.getWord();
+    WordGroup? word = currentKeyboard.getWord();
     if (word != null) {
-      text.value = Words.wordsListToString(words + [word]);
+      text.value = WordGroup.wordsListToString(words + [word]);
     } else {
-      text.value = Words.wordsListToString(words);
+      text.value = WordGroup.wordsListToString(words);
     }
     textEditingController.text = text.value;
   }
@@ -47,21 +53,56 @@ class Typer {
   }
 
   bool nextAlternative() {
-    return currentKeyboard.nextAlternative();
+    if (currentKeyboard.isTyping()) {
+      return false;
+    }
+    // Get the last word
+    WordGroup? lastWord = getLastWord();
+    if (lastWord == null) {
+      return false;
+    }
+
+    bool r = lastWord.nextWord();
+
+    // Speak the word
+    _speakWord(lastWord.getWord());
+
+    _updateText();
+
+    return r;
   }
 
   bool previousAlternative() {
-    return currentKeyboard.previousAlternative();
+    if (currentKeyboard.isTyping()) {
+      return false;
+    }
+    // Get the last word
+    WordGroup? lastWord = getLastWord();
+    if (lastWord == null) {
+      return false;
+    }
+
+    bool r = lastWord.previousWord();
+
+    // Speak the word
+    _speakWord(lastWord.getWord());
+
+    _updateText();
+
+    return r;
   }
 
   void space() {
-    Words? word = currentKeyboard.getWord();
+    WordGroup? word = currentKeyboard.getWord();
     if (word != null && word.getWord().word.isNotEmpty) {
       words.add(word);
       currentKeyboard.clearWord();
       _updateText();
+
+      // Speak the word
+      _speakWord(word.getWord());
     } else {
-      words.add(Words.punctuation());
+      words.add(WordGroup.punctuation());
     }
   }
 
@@ -74,5 +115,17 @@ class Typer {
       words.removeLast();
       _updateText();
     }
+  }
+
+  WordGroup? getLastWord() {
+    if (words.isNotEmpty) {
+      return words.last;
+    } else {
+      return null;
+    }
+  }
+
+  void _speakWord(Word word) {
+    _textToSpeech.speak(word.word);
   }
 }

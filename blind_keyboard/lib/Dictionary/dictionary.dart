@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:blind_keyboard/Dictionary/dictionary_wl.dart';
-import 'package:blind_keyboard/Dictionary/words.dart';
+import 'package:blind_keyboard/Dictionary/word_group.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -73,14 +73,14 @@ class LangDictionary {
   }
 
   // Calc word from points
-  Words calcWord(List<Point> points, {bool allowPrefix = true}) {
+  WordGroup calcWord(List<Point> points, {bool allowPrefix = true}) {
     // Check if dictionary is loaded
     if (!isLoaded) {
-      return Words.nothing();
+      return WordGroup.nothing();
     }
 
     if (points.length < 2) {
-      return Words.nothing();
+      return WordGroup.nothing();
     }
 
     // Get word length
@@ -90,9 +90,9 @@ class LangDictionary {
     final WLDictionary dictionary = dict[wordLength - _minimumLengthWord];
 
     // Get word
-    final Words word = dictionary.calcWord(points);
+    final WordGroup word = dictionary.calcWord(points);
 
-    List<Words> words = [word];
+    List<WordGroup> words = [word];
 
     // Prefixes
     if (allowPrefix &&
@@ -105,23 +105,25 @@ class LangDictionary {
           i++) {
         final WLDictionary prefixDictionary =
             prefixDict[i - _minimumLengthPrefix];
-        final Words prefix = prefixDictionary.calcWord(points.sublist(0, i));
+        final WordGroup prefix =
+            prefixDictionary.calcWord(points.sublist(0, i));
         if (prefix.getWord().dist == null) {
           continue;
         }
 
-        final Words afterPrefixWord =
+        final WordGroup afterPrefixWord =
             calcWord(points.sublist(i, points.length), allowPrefix: false);
         if (afterPrefixWord.getWord().dist == null) {
           continue;
         }
 
-        final Words combinedWord = Words.combine(prefix, afterPrefixWord);
+        final WordGroup combinedWord =
+            WordGroup.combine(prefix, afterPrefixWord);
         words.add(combinedWord);
       }
     }
 
-    Words bestWord = Words.flatWordsList(words);
+    WordGroup bestWord = WordGroup.flatWordsList(words);
 
     return bestWord;
   }

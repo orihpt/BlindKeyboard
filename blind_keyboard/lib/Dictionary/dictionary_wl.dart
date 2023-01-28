@@ -1,5 +1,5 @@
 import 'package:blind_keyboard/Dictionary/word.dart';
-import 'package:blind_keyboard/Dictionary/words.dart';
+import 'package:blind_keyboard/Dictionary/word_group.dart';
 import 'package:blind_keyboard/Keyboard/keyboard.dart';
 import 'package:blind_keyboard/Keyboard/keyboard_layout.dart';
 import 'package:flutter/services.dart';
@@ -99,9 +99,9 @@ class WLDictionary {
   }
 
   // Calculate word from points
-  Words calcWord(List<Point> points) {
+  WordGroup calcWord(List<Point> points) {
     if (points.length != wordLength) {
-      return Words.nothing();
+      return WordGroup.nothing();
     }
 
     // Create map from points
@@ -125,7 +125,7 @@ class WLDictionary {
     }
 
     // Return word
-    return Words.sorted(words);
+    return WordGroup.sorted(words);
   }
 
 /*

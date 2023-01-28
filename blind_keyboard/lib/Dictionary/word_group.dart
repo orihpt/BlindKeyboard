@@ -2,7 +2,7 @@ import 'package:blind_keyboard/Dictionary/word.dart';
 import 'package:flutter/foundation.dart';
 
 // The words class holds a word and its alternatives.
-class Words {
+class WordGroup {
   late ValueNotifier<int> index = ValueNotifier<int>(0);
 
   // The alternatives of the word.
@@ -12,14 +12,14 @@ class Words {
   late bool isPunctuation = false;
 
   // # Constructors
-  Words(this.words, {this.isPunctuation = false});
+  WordGroup(this.words, {this.isPunctuation = false});
 
-  Words.sorted(this.words, {this.isPunctuation = false}) {
+  WordGroup.sorted(this.words, {this.isPunctuation = false}) {
     // Sort words by distance (so that index 0 is the closest word)
     words.sort((a, b) => a.dist!.compareTo(b.dist!));
   }
 
-  Words.punctuation() {
+  WordGroup.punctuation() {
     isPunctuation = true;
     List<String> punctuationList = [".", ",", "!", "?", ":", ";"];
     // Create a word for each punctuation
@@ -29,7 +29,7 @@ class Words {
     }
   }
 
-  Words.combine(Words a, Words b) {
+  WordGroup.combine(WordGroup a, WordGroup b) {
     // Possible combinations
     words = [];
     for (Word wordA in a.words) {
@@ -41,7 +41,7 @@ class Words {
     words.sort((a, b) => a.dist!.compareTo(b.dist!));
   }
 
-  Words.nothing() {
+  WordGroup.nothing() {
     words = [Word.nothing()];
   }
 
@@ -78,9 +78,9 @@ class Words {
   // # Static functions
 
   // Converts a words list into a string.
-  static String wordsListToString(List<Words> words) {
+  static String wordsListToString(List<WordGroup> words) {
     String str = "";
-    for (Words word in words) {
+    for (WordGroup word in words) {
       if (word.isPunctuation) {
         str += word.getWord().word;
       } else {
@@ -96,9 +96,10 @@ class Words {
     return str;
   }
 
-  static Words flatWordsList(List<Words> wordsList, {isPunctuation = false}) {
+  static WordGroup flatWordsList(List<WordGroup> wordsList,
+      {isPunctuation = false}) {
     List<Word> words = [];
-    for (Words wordsObj in wordsList) {
+    for (WordGroup wordsObj in wordsList) {
       for (Word wordObj in wordsObj.words) {
         if (wordObj.dist != null) {
           words.add(wordObj);
@@ -109,6 +110,6 @@ class Words {
     // Sort words by distance
     words.sort((a, b) => a.dist!.compareTo(b.dist!));
 
-    return Words(words, isPunctuation: isPunctuation);
+    return WordGroup(words, isPunctuation: isPunctuation);
   }
 }
