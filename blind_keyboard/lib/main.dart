@@ -47,6 +47,8 @@ class MyHomePage extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: TextField(
                 controller: typer.textEditingController,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'הקלידו כאן...',

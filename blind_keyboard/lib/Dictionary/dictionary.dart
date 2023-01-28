@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:blind_keyboard/Dictionary/dictionary_wl.dart';
-import 'package:blind_keyboard/Dictionary/word.dart';
+import 'package:blind_keyboard/Dictionary/words.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -73,14 +73,14 @@ class LangDictionary {
   }
 
   // Calc word from points
-  Word calcWord(List<Point> points, {bool allowPrefix = true}) {
+  Words calcWord(List<Point> points, {bool allowPrefix = true}) {
     // Check if dictionary is loaded
     if (!isLoaded) {
-      return Word("*", null, []);
+      return Words.nothing();
     }
 
     if (points.length < 2) {
-      return Word("*", null, []);
+      return Words.nothing();
     }
 
     // Get word length
@@ -90,9 +90,9 @@ class LangDictionary {
     final WLDictionary dictionary = dict[wordLength - _minimumLengthWord];
 
     // Get word
-    final Word word = dictionary.calcWord(points);
+    final Words word = dictionary.calcWord(points);
 
-    List<Word> words = [word];
+    List<Words> words = [word];
 
     // Prefixes
     if (allowPrefix &&
@@ -105,29 +105,23 @@ class LangDictionary {
           i++) {
         final WLDictionary prefixDictionary =
             prefixDict[i - _minimumLengthPrefix];
-        final Word prefix = prefixDictionary.calcWord(points.sublist(0, i));
-
-        if (prefix.dist == null) {
+        final Words prefix = prefixDictionary.calcWord(points.sublist(0, i));
+        if (prefix.getWord().dist == null) {
           continue;
         }
 
-        final Word afterPrefixWord =
+        final Words afterPrefixWord =
             calcWord(points.sublist(i, points.length), allowPrefix: false);
-        if (afterPrefixWord.dist == null) {
+        if (afterPrefixWord.getWord().dist == null) {
           continue;
         }
 
-        // Calculate confidence
-        final double dist = prefix.dist! + afterPrefixWord.dist!;
-
-        print("${prefix.word}+${afterPrefixWord.word}");
-
-        final Word newWord = Word(prefix.word + afterPrefixWord.word, dist, []);
-        words.add(newWord);
+        final Words combinedWord = Words.combine(prefix, afterPrefixWord);
+        words.add(combinedWord);
       }
     }
 
-    Word bestWord = Word.getBestWord(words);
+    Words bestWord = Words.flatWordsList(words);
 
     return bestWord;
   }

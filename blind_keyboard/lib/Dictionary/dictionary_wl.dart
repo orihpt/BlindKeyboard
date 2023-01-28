@@ -1,4 +1,5 @@
 import 'package:blind_keyboard/Dictionary/word.dart';
+import 'package:blind_keyboard/Dictionary/words.dart';
 import 'package:blind_keyboard/Keyboard/keyboard.dart';
 import 'package:blind_keyboard/Keyboard/keyboard_layout.dart';
 import 'package:flutter/services.dart';
@@ -98,9 +99,9 @@ class WLDictionary {
   }
 
   // Calculate word from points
-  Word calcWord(List<Point> points) {
+  Words calcWord(List<Point> points) {
     if (points.length != wordLength) {
-      return Word("*", null, []);
+      return Words.nothing();
     }
 
     // Create map from points
@@ -120,11 +121,11 @@ class WLDictionary {
       int wordIndex = row[0]["i"];
       String wordStr = this.words[wordIndex];
 
-      words.add(Word(wordStr, dist, []));
+      words.add(Word(wordStr, dist));
     }
 
     // Return word
-    return Word.getBestWord(words);
+    return Words.sorted(words);
   }
 
 /*

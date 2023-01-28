@@ -45,7 +45,10 @@ class KeyboardWidget extends StatelessWidget {
                 width: 100,
                 height: 100,
                 child: CircularProgressIndicator(
-                    value: progress, strokeWidth: 10))));
+                  value: progress,
+                  strokeWidth: 10,
+                  backgroundColor: Colors.white,
+                ))));
   }
 
   Widget _createKeyboard(BuildContext context) {
@@ -58,15 +61,29 @@ class KeyboardWidget extends StatelessWidget {
             },
             onPanEnd: (details) {
               var xDist = details.velocity.pixelsPerSecond.dx;
+              var yDist = details.velocity.pixelsPerSecond.dy;
+
               if (Keyboard.isRTL(keyboard.languageCode)) xDist = -xDist;
-              //print("xDist: $xDist");
+              print("xDist: $xDist, yDist: $yDist");
               if (xDist > 700) {
                 print("space");
                 space();
+                return;
               }
               if (xDist < -700) {
                 print("backspace");
                 backspace();
+                return;
+              }
+              if (yDist > 700) {
+                print("next alternative");
+                keyboard.typer.nextAlternative();
+                return;
+              }
+              if (yDist < -700) {
+                print("next alternative");
+                keyboard.typer.previousAlternative();
+                return;
               }
             },
             child: Column(children: [

@@ -1,4 +1,4 @@
-import 'package:blind_keyboard/Dictionary/word.dart';
+import 'package:blind_keyboard/Dictionary/words.dart';
 import 'package:blind_keyboard/Keyboard/keyboard.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -11,7 +11,7 @@ class Typer {
   ValueNotifier<String> text = ValueNotifier<String>('hi');
 
   // The private text property, does not include current word typed.
-  List<Word> words = [];
+  List<Words> words = [];
 
   TextEditingController textEditingController = TextEditingController();
 
@@ -31,11 +31,11 @@ class Typer {
   }
 
   void _updateText() {
-    Word? word = currentKeyboard.getWord();
+    Words? word = currentKeyboard.getWord();
     if (word != null) {
-      text.value = Word.wordsListToString(words + [word]);
+      text.value = Words.wordsListToString(words + [word]);
     } else {
-      text.value = Word.wordsListToString(words);
+      text.value = Words.wordsListToString(words);
     }
     textEditingController.text = text.value;
   }
@@ -46,14 +46,22 @@ class Typer {
     }
   }
 
+  bool nextAlternative() {
+    return currentKeyboard.nextAlternative();
+  }
+
+  bool previousAlternative() {
+    return currentKeyboard.previousAlternative();
+  }
+
   void space() {
-    Word? word = currentKeyboard.getWord();
-    if (word != null && word.word.isNotEmpty) {
+    Words? word = currentKeyboard.getWord();
+    if (word != null && word.getWord().word.isNotEmpty) {
       words.add(word);
       currentKeyboard.clearWord();
       _updateText();
     } else {
-      words.add(Word.punctuation());
+      words.add(Words.punctuation());
     }
   }
 

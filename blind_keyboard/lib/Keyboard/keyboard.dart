@@ -1,5 +1,5 @@
 import 'package:blind_keyboard/Dictionary/dictionary.dart';
-import 'package:blind_keyboard/Dictionary/word.dart';
+import 'package:blind_keyboard/Dictionary/words.dart';
 import 'package:blind_keyboard/Other%20Classes/point.dart';
 import 'package:blind_keyboard/Typer/typer.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class Keyboard {
   late Typer typer;
 
   // The word that is currently being typed.
-  Word _word = Word.nothing();
+  Words _word = Words.nothing();
   List<Point> wordPoints = [];
 
   // The loading progress of the dictionary.
@@ -50,7 +50,7 @@ class Keyboard {
 
   void addSpace() {
     typer.space();
-    _word = Word.nothing();
+    _word = Words.nothing();
     wordPoints = [];
   }
 
@@ -69,7 +69,7 @@ class Keyboard {
 
   // Clear word
   void clearWord() {
-    _word = Word.nothing();
+    _word = Words.nothing();
     wordPoints = [];
   }
 
@@ -87,11 +87,33 @@ class Keyboard {
   // # Keyboard APIs
 
   // Get word
-  Word? getWord() {
-    if (_word.dist == null) {
+  Words? getWord() {
+    if (_word.isEmpty()) {
       return null;
     }
     return _word;
+  }
+
+  // Next alternative
+  bool nextAlternative() {
+    if (!_word.nextWord()) {
+      return false;
+    }
+
+    // Notify typer
+    typer.wordUpdatedAtKeyboard(keyboard: this);
+    return true;
+  }
+
+  // Previous alternative
+  bool previousAlternative() {
+    if (!_word.previousWord()) {
+      return false;
+    }
+
+    // Notify typer
+    typer.wordUpdatedAtKeyboard(keyboard: this);
+    return true;
   }
 
   // # Static methods
