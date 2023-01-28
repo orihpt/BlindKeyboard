@@ -185,13 +185,16 @@ class KeyboardWidget extends StatelessWidget {
   void clicked(BuildContext context, double x, double y) {
     // This code section converts the coordinates of the click to the coordinates of the keyboard.
     double width = context.size?.width ?? 0;
-    double height = context.size?.height ?? 0;
+    double height =
+        (context.size?.height ?? 0) - wordTypingHeight - bottomBarHeight;
 
     y = y - verticalPadding - letterHeight / 2;
     height = height - 2 * verticalPadding - letterHeight;
 
     double xKeyboard = x / width;
-    double yKeyboard = y * (keyboard.layout.layout.length - 1) / height;
+    double yKeyboard = (keyboard.layout.layout.length - 1) * y / height;
+
+    // print("Clicked at ($xKeyboard, $yKeyboard)");
 
     keyboard.click(xKeyboard, yKeyboard);
   }

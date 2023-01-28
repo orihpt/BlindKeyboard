@@ -37,10 +37,6 @@ class Keyboard {
   //
   // Please notice that the x,y coordinates are relative to the keyboard.
   // The keyboard is Mx1 matrix, where M is the number of rows and N is the length of the longest row.
-  // For example in English keyboard:
-  // - (0,0) is Q
-  // - (0,1) is W
-  // - ()
   // For more information about the keyboard coordinates, check the repo documentation.
   void click(double x, double y) {
     // Add point to points list
