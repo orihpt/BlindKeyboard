@@ -135,6 +135,15 @@ class Typer {
   }
 
   void _speakWord(Word word) {
+    _textToSpeech.stop();
+    switch (currentKeyboard.languageCode) {
+      case 'he':
+        _textToSpeech.setLanguage('he-IL');
+        break;
+      case 'en':
+        _textToSpeech.setLanguage('en-US');
+        break;
+    }
     _textToSpeech.speak(word.word);
   }
 
