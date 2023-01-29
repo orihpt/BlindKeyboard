@@ -57,8 +57,7 @@ class Keyboard {
     if (wordPoints.isNotEmpty) {
       wordPoints.removeLast();
 
-      // Calculate word
-      calcWord();
+      wordUpdated();
     } else {
       typer.removeLastWord();
     }
