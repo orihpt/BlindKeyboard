@@ -45,8 +45,8 @@ class Keyboard {
     wordUpdated();
   }
 
-  void addSpace() {
-    typer.space();
+  void addSpace({double? keyboardAspectRatio}) {
+    typer.space(keyboardAspectRatio: keyboardAspectRatio);
     _word = WordGroup.nothing();
     wordPoints = [];
   }
@@ -73,9 +73,9 @@ class Keyboard {
   // # Word Calculations
 
   // Word Calculation
-  void calcWord() {
+  void calcWord({double? aspectRatio}) {
     // Get word from dictionary
-    _word = dictionary.calcWord(wordPoints);
+    _word = dictionary.calcWord(wordPoints, aspectRatio: aspectRatio);
 
     wordUpdated();
   }

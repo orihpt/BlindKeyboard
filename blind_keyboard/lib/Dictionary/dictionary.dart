@@ -70,7 +70,8 @@ class LangDictionary {
   }
 
   // Calc word from points
-  WordGroup calcWord(List<Point> points, {bool allowPrefix = true}) {
+  WordGroup calcWord(List<Point> points,
+      {double? aspectRatio, bool allowPrefix = true}) {
     // Check if dictionary is loaded
     if (!isLoaded) {
       // Flutter warning
@@ -89,7 +90,8 @@ class LangDictionary {
     final WLDictionary dictionary = dict[wordLength - _minimumLengthWord];
 
     // Get word
-    final WordGroup word = dictionary.calcWord(points);
+    final WordGroup word =
+        dictionary.calcWord(points, aspectRatio: aspectRatio);
 
     List<WordGroup> words = [word];
 
@@ -106,12 +108,14 @@ class LangDictionary {
             prefixDict[i - _minimumLengthPrefix];
         final WordGroup prefix =
             prefixDictionary.calcWord(points.sublist(0, i));
-        if (prefix.getWord().dist == null) {
+        if (prefix.getWord().dist == null || prefix.getWord().dist! / i > 0.4) {
           continue;
         }
 
-        final WordGroup afterPrefixWord =
-            calcWord(points.sublist(i, points.length), allowPrefix: false);
+        final WordGroup afterPrefixWord = calcWord(
+            points.sublist(i, points.length),
+            aspectRatio: aspectRatio,
+            allowPrefix: false);
         if (afterPrefixWord.getWord().dist == null) {
           continue;
         }

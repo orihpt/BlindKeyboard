@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'keyboard.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class KeyboardWidget extends StatelessWidget {
   final Keyboard keyboard;
@@ -80,7 +81,7 @@ class KeyboardWidget extends StatelessWidget {
               if (xDist.abs() > yDist.abs() && xDist.abs() > 700) {
                 if (xDist > 0) {
                   print("space");
-                  space();
+                  space(context);
                 } else {
                   print("backspace");
                   backspace();
@@ -160,16 +161,17 @@ class KeyboardWidget extends StatelessWidget {
           Expanded(
               child: TextButton(
                   onPressed: () {
-                    space();
+                    space(context);
                   },
                   child: Container(
                       decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
-                      child: const Center(
-                          child: Text("Space",
-                              style: TextStyle(
+                      child: Center(
+                          child: Text(
+                              AppLocalizations.of(context)!.keyboard_space,
+                              style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold)))))),
@@ -191,8 +193,7 @@ class KeyboardWidget extends StatelessWidget {
   void clicked(BuildContext context, double x, double y) {
     // This code section converts the coordinates of the click to the coordinates of the keyboard.
     double width = context.size?.width ?? 0;
-    double height =
-        (context.size?.height ?? 0) - wordTypingHeight - bottomBarHeight;
+    double height = _keyboardHeight(context);
 
     y = y - verticalPadding - letterHeight / 2;
     height = height - 2 * verticalPadding - letterHeight;
@@ -205,6 +206,10 @@ class KeyboardWidget extends StatelessWidget {
     keyboard.click(xKeyboard, yKeyboard);
   }
 
+  double _keyboardHeight(BuildContext context) {
+    return (context.size?.height ?? 0) - wordTypingHeight - bottomBarHeight;
+  }
+
   double matchingHeight(BuildContext context) {
     int rows = keyboard.layout.layout.length;
     return rows * letterHeight +
@@ -213,8 +218,9 @@ class KeyboardWidget extends StatelessWidget {
         bottomBarHeight;
   }
 
-  void space() {
-    keyboard.addSpace();
+  void space(BuildContext context) {
+    keyboard.addSpace(
+        keyboardAspectRatio: _keyboardHeight(context) / context.size!.width);
   }
 
   void backspace() {

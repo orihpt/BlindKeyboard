@@ -1,11 +1,10 @@
 import 'package:blind_keyboard/Keyboard/keyboard_widget.dart';
 import 'package:blind_keyboard/Typer/typer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NoteScreen extends StatelessWidget {
-  Typer typer = Typer();
+  final Typer typer = Typer();
 
   NoteScreen({super.key});
 

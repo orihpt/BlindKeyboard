@@ -2,7 +2,6 @@ import 'package:blind_keyboard/Dictionary/word_group.dart';
 import 'package:blind_keyboard/Keyboard/keyboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:text_to_speech/text_to_speech.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../Dictionary/word.dart';
 
@@ -99,8 +98,8 @@ class Typer {
     return r;
   }
 
-  void space() {
-    currentKeyboard.value.calcWord();
+  void space({double? keyboardAspectRatio}) {
+    currentKeyboard.value.calcWord(aspectRatio: keyboardAspectRatio);
     WordGroup? word = currentKeyboard.value.getWord();
     if (word != null && word.getWord().word.isNotEmpty) {
       words.add(word);
