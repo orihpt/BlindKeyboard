@@ -26,21 +26,27 @@ class KeyboardWidget extends StatelessWidget {
     // Each letter is a text, and each row is a horizontal layout.
     // The rows are stacked vertically.
 
-    return Container(
-        color: Colors.black,
-        child: ValueListenableBuilder(
-            valueListenable: keyboard.loadingProgress,
-            builder: (context, value, child) {
-              if (value == 1) {
-                return Column(children: [
-                  _createWordTyping(context),
-                  _createKeyboard(context),
-                  _createBottomBar(context)
-                ]);
-              } else {
-                return _createLoadingWidget(context, value);
-              }
-            }));
+    return Localizations.override(
+        context: context,
+        locale: Locale(keyboard.languageCode),
+        child: Container(
+            color: Colors.black,
+            child: ValueListenableBuilder(
+                valueListenable: keyboard.loadingProgress,
+                builder: (context, value, child) {
+                  if (value == 1) {
+                    return Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Column(children: [
+                        _createWordTyping(context),
+                        _createKeyboard(context),
+                        _createBottomBar(context)
+                      ]),
+                    );
+                  } else {
+                    return _createLoadingWidget(context, value);
+                  }
+                })));
   }
 
   Widget _createLoadingWidget(BuildContext context, double progress) {

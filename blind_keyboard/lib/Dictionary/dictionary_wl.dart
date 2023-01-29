@@ -14,6 +14,9 @@ class WLDictionary {
   late KDTree tree;
   late final String _type;
 
+  // The aspect ratio of the keyboard: width/height
+  double aspectRatio = 1.0;
+
   // words
   List<String> words = [];
 
@@ -79,10 +82,11 @@ class WLDictionary {
       var sum = 0.0;
       for (int i = 0; i < wordLength; i++) {
         var iStr = i.toString();
-        var x1 = lhs['x$iStr'];
+        var x1 = lhs['x$iStr'] * aspectRatio;
         var y1 = lhs['y$iStr'];
-        var x2 = rhs['x$iStr'];
+        var x2 = rhs['x$iStr'] * aspectRatio;
         var y2 = rhs['y$iStr'];
+
         sum += (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
       }
       return sum;
@@ -97,10 +101,15 @@ class WLDictionary {
   }
 
   // Calculate word from points
-  WordGroup calcWord(List<Point> points) {
+  WordGroup calcWord(List<Point> points, {double? aspectRatio}) {
     // hello	0.6	0.125	0.272727272727273	0	0.9	0.125	0.9	0.125	0.818181818181818	0
     if (points.length != wordLength) {
       return WordGroup.nothing();
+    }
+
+    // Set aspect ratio
+    if (aspectRatio != null) {
+      this.aspectRatio = aspectRatio;
     }
 
     // Create map from points

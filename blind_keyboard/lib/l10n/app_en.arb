@@ -1,0 +1,15 @@
+{
+  "keyboard_space": "space",
+  "@keyboard_soace": {
+    "description": "The text of the space button"
+  },
+  "language_changed_this_msg": "Language changed to English",
+  "@language_changed_this_msg": {
+    "description": "The message that appears when the language is changed"
+  },
+  "tts_lang_code": "en-US",
+  "@tts_lang_code": {
+    "description": "The language code of the English language"
+  },
+  "placeholder_type_here": "Type here..."
+}
