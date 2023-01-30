@@ -137,6 +137,8 @@ class KeyboardWidget extends StatelessWidget {
             child: TextField(
                 controller: keyboard.typer.keyboardEditingController,
                 textAlign: TextAlign.center,
+                readOnly: true,
+                showCursor: true,
                 style: const TextStyle(color: Colors.white, fontSize: 40))));
   }
 
