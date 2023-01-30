@@ -1,3 +1,4 @@
+import 'package:blind_keyboard/UI/Assistant/assistant_screen.dart';
 import 'package:blind_keyboard/UI/Style/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -23,6 +24,10 @@ class NoteScreenTopBar extends StatelessWidget {
             icon: const Icon(Icons.info),
             iconSize: 40,
             onPressed: () {
+              // Open assistant screen
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const AssistantScreen();
+              }));
             },
           ),
         ],
