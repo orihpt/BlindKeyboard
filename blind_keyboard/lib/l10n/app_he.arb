@@ -11,5 +11,6 @@
   "@tts_lang_code": {
     "description": "The language code of the English language"
   },
-  "placeholder_type_here": "הקלידו כאן..."
+  "placeholder_type_here": "הקלידו כאן...",
+  "note_screen_title": "פתק מהיר"
 }

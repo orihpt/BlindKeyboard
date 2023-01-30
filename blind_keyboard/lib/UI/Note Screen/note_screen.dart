@@ -1,5 +1,7 @@
-import 'package:blind_keyboard/Keyboard/keyboard_widget.dart';
+import 'package:blind_keyboard/UI/Keyboard/keyboard_widget.dart';
 import 'package:blind_keyboard/Typer/typer.dart';
+import 'package:blind_keyboard/UI/Note%20Screen/note_screen_top_bar.dart';
+import 'package:blind_keyboard/UI/Style/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -16,7 +18,11 @@ class NoteScreen extends StatelessWidget {
         return Scaffold(
           body: SafeArea(
             bottom: false,
+            top: false,
             child: Column(children: [
+              Container(color: AppColors.barColor, height: safeArea.top),
+              const NoteScreenTopBar(),
+              Container(color: AppColors.separatorColor, height: 2),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
@@ -30,6 +36,10 @@ class NoteScreen extends StatelessWidget {
                   ),
                   readOnly: true,
                   showCursor: true,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    color: Colors.black,
+                  ),
                   textAlign: TextAlign.right,
                 ),
               ),

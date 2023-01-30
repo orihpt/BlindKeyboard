@@ -11,5 +11,6 @@
   "@tts_lang_code": {
     "description": "The language code of the English language"
   },
-  "placeholder_type_here": "Type here..."
+  "placeholder_type_here": "Type here...",
+  "note_screen_title": "Quick Note"
 }
