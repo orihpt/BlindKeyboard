@@ -40,7 +40,9 @@ class NoteScreen extends StatelessWidget {
                     fontSize: 25,
                     color: Colors.black,
                   ),
-                  textAlign: TextAlign.right,
+                  textAlign: Directionality.of(context) == TextDirection.rtl
+                      ? TextAlign.right
+                      : TextAlign.left,
                 ),
               ),
               const Spacer(flex: 1),
