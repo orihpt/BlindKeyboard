@@ -11,5 +11,11 @@
   "@tts_lang_code": {
     "description": "The language code of the English language"
   },
-  "placeholder_type_here": "Type here..."
+  "placeholder_type_here": "Type here...",
+  "note_screen_title": "Quick Note",
+  
+  "info_title": "Welcome to Blind Keyboard",
+  "info_description": "Blind Keyboard is a keyboard that allows you to type without looking at the screen. It is designed for blind and visually impaired people. It is also useful for people who want to type without looking at the screen. As you are typing words, the app search in the dictionary for the word that is most close to what you are typing.\nFor your convinience, the keyboard speaks the words that you are typing.",
+  "info_howtouse_title": "How to use",
+  "info_howtouse_description": "→ Swipe right to enter space.\n← Swipe left to delete the last character or the last word.\n↓ Swipe down to go to the next word suggestion.\n↑ Swipe up to go to the previous word suggestion.\n🌏 The earth button on the bottom left changes the language.\nAlternatively, you can use the space bar and the backspace key on the keyboard."
 }

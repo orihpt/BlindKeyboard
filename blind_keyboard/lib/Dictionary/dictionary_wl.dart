@@ -56,6 +56,11 @@ class WLDictionary {
     final List<List<dynamic>> data =
         const CsvToListConverter().convert(csvString);
 
+    if (data.length <= 1) {
+      print(
+          "WARNING: $language language / $_type / $wordLength characters might be empty. Make sure line ending is CRLF in path: $fullPath");
+    }
+
     final List<Map<String, dynamic>> map = [];
     for (int i = 1; i < data.length; i++) {
       final row = data[i];
