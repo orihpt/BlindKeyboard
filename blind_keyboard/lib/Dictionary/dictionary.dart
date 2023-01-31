@@ -26,7 +26,14 @@ class LangDictionary {
   bool isLoaded = false;
   ValueNotifier<double> loadProgress = ValueNotifier(0);
 
-  LangDictionary(this.language);
+  LangDictionary(this.language) {
+    loadProgress.addListener(() {
+      if (loadProgress.value > 0.99) {
+        loadProgress.value = 1;
+      }
+      isLoaded = loadProgress.value > 0.99;
+    });
+  }
 
   Future<void> load() async {
     // Load language information
@@ -43,11 +50,9 @@ class LangDictionary {
     dict = [];
     for (int i = _minimumLengthWord; i <= _maximumLengthWord; i++) {
       final WLDictionary dictionary = WLDictionary(i, language, "mat");
-      await dictionary.makeTree();
+      dictionary.makeTree().then((value) => loadProgress.value +=
+          0.9 * 1 / (_maximumLengthWord - _minimumLengthWord + 1.0));
       dict.add(dictionary);
-      loadProgress.value = 0.9 *
-          (i - _minimumLengthWord) /
-          (_maximumLengthWord - _minimumLengthWord);
     }
 
     // Make dictionary for prefixes
@@ -55,18 +60,16 @@ class LangDictionary {
       prefixDict = [];
       for (int i = _minimumLengthPrefix; i <= _maximumLengthPrefix; i++) {
         final WLDictionary dictionary = WLDictionary(i, language, "prefix");
-        await dictionary.makeTree();
+        dictionary.makeTree().then((value) => loadProgress.value +=
+            0.1 * 1 / (_maximumLengthPrefix - _minimumLengthPrefix + 1.0));
         prefixDict.add(dictionary);
-        loadProgress.value = 0.1 *
-                (i - _minimumLengthPrefix) /
-                (_maximumLengthPrefix - _minimumLengthPrefix) +
-            0.9;
       }
+    } else {
+      loadProgress.value += 0.1;
     }
 
-    loadProgress.value = 1;
-    isLoaded = true;
-    print("Loaded $language dictionary");
+    //loadProgress.value = 1;
+    //isLoaded = true;
   }
 
   // Calc word from points
