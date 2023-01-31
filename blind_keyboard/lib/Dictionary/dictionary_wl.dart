@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:blind_keyboard/Dictionary/word.dart';
 import 'package:blind_keyboard/Dictionary/word_group.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,7 @@ import '../Other Classes/point.dart';
 class WLDictionary {
   late final int wordLength;
   late final String source;
+  late final String wordsSource;
   final String language;
   late KDTree tree;
   late final String _type;
@@ -27,10 +30,12 @@ class WLDictionary {
   WLDictionary(this.wordLength, this.language, this._type) {
     switch (_type) {
       case "mat":
-        source = "assets/Lang/$language/matrixes/mat_$wordLength.csv";
+        source = "assets/Lang/$language/words/tree_$wordLength.json";
+        wordsSource = "assets/Lang/$language/words/words_$wordLength.json";
         break;
       case "prefix":
-        source = "assets/Lang/$language/prefixes/prefix_$wordLength.csv";
+        source = "assets/Lang/$language/prefixes/tree_$wordLength.json";
+        wordsSource = "assets/Lang/$language/prefixes/words_$wordLength.json";
         break;
       default:
         throw Exception("Invalid type: $_type");
@@ -51,36 +56,12 @@ class WLDictionary {
 
     // Read from the csv file.
 
-    final String fullPath = source;
-    final String csvString = await rootBundle.loadString(fullPath);
-    final List<List<dynamic>> data =
-        const CsvToListConverter().convert(csvString);
+    final String str = await rootBundle.loadString(source);
+    final Map<String, dynamic> json = jsonDecode(str);
 
-    if (data.length <= 1) {
-      print(
-          "WARNING: $language language / $_type / $wordLength characters might be empty. Make sure line ending is CRLF in path: $fullPath");
-    }
-
-    final List<Map<String, dynamic>> map = [];
-    for (int i = 1; i < data.length; i++) {
-      final row = data[i];
-      final Map<String, dynamic> mapRow = {"i": i - 1};
-      words.add(row[0]);
-      for (int j = 0; j < wordLength; j++) {
-        var jStr = j.toString();
-        mapRow['x$jStr'] = row[j * 2 + 1];
-        mapRow['y$jStr'] = row[j * 2 + 2];
-      }
-      map.add(mapRow);
-    }
-
-    // Dimentions is the list of keys in the map
-    final List<String> dimensions = ["i"];
-    for (int i = 0; i < wordLength; i++) {
-      var iStr = i.toString();
-      dimensions.add('x$iStr');
-      dimensions.add('y$iStr');
-    }
+    final String strWords = await rootBundle.loadString(wordsSource);
+    final List<dynamic> wordsListDynamic = jsonDecode(strWords);
+    words = wordsListDynamic.map((e) => e.toString()).toList();
 
     // Create distance function
     distance(lhs, rhs) {
@@ -98,8 +79,8 @@ class WLDictionary {
     }
 
     // Create tree
-    // Create a new tree from a list of points, a distance function, and a
-    tree = KDTree(map, distance, dimensions);
+    tree = KDTree.fromJson(json);
+    tree.metric = distance;
 
     print(
         "Done creating tree for $_type with $wordLength letter words in $language");
@@ -127,17 +108,17 @@ class WLDictionary {
 
     // Find nearest word
     final nearest = tree.nearest(map, 7);
-    List<Word> words = [];
+    List<Word> wordsList = [];
     for (int i = 0; i < nearest.length; i++) {
       var row = nearest[i];
       double dist = row[1];
       int wordIndex = row[0]["i"];
-      String wordStr = this.words[wordIndex];
+      String wordStr = words[wordIndex];
 
-      words.add(Word(wordStr, dist));
+      wordsList.add(Word(wordStr, dist));
     }
 
     // Return word
-    return WordGroup.sorted(words);
+    return WordGroup.sorted(wordsList);
   }
 }
