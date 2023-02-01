@@ -1,4 +1,3 @@
-// Contains the dictionary of each word-length.
 import 'dart:convert';
 import 'dart:math';
 
@@ -9,6 +8,7 @@ import 'package:flutter/services.dart';
 
 import '../Other Classes/point.dart';
 
+// Contains the dictionary for a specific language.
 class LangDictionary {
   // Language Information
   final String language;
@@ -45,7 +45,7 @@ class LangDictionary {
     // Make dictionary for regular words
     dict = [];
     for (int i = _minimumLengthWord; i <= _maximumLengthWord; i++) {
-      final WLDictionary dictionary = WLDictionary(i, language, "mat");
+      final WLDictionary dictionary = WLDictionary(i, language, WordType.mat);
       await dictionary.makeTree();
       dict.add(dictionary);
       loadProgress.value = 0.9 *
@@ -57,7 +57,8 @@ class LangDictionary {
     if (_hasPrefixes) {
       prefixDict = [];
       for (int i = _minimumLengthPrefix; i <= _maximumLengthPrefix; i++) {
-        final WLDictionary dictionary = WLDictionary(i, language, "prefix");
+        final WLDictionary dictionary =
+            WLDictionary(i, language, WordType.prefix);
         await dictionary.makeTree();
         prefixDict.add(dictionary);
         loadProgress.value = 0.1 *

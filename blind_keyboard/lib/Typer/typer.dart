@@ -32,6 +32,7 @@ class Typer {
     _load();
   }
 
+  // Loads the current keyboard, and unloads the other keyboards.
   void _load() {
     for (Keyboard keyboard in keyboards) {
       if (keyboard != currentKeyboard.value) {
@@ -41,6 +42,8 @@ class Typer {
     currentKeyboard.value.load();
   }
 
+  // # Text Interactions
+  // Updates the text and the text field.
   void _updateText() {
     WordGroup? word = currentKeyboard.value.getWord();
     if (word != null) {
@@ -55,12 +58,14 @@ class Typer {
             '';
   }
 
+  // Called when the word is updated.
   void wordUpdatedAtKeyboard({required Keyboard keyboard}) {
     if (keyboard == currentKeyboard.value) {
       _updateText();
     }
   }
 
+  // Goes to the next alternative in the current word.
   bool nextAlternative() {
     if (currentKeyboard.value.isTyping()) {
       return false;
@@ -81,6 +86,7 @@ class Typer {
     return r;
   }
 
+  // Goes to the previous alternative in the current word.
   bool previousAlternative() {
     if (currentKeyboard.value.isTyping()) {
       return false;
@@ -101,6 +107,7 @@ class Typer {
     return r;
   }
 
+  // Adds space
   void space({double? keyboardAspectRatio}) {
     currentKeyboard.value.calcWord(aspectRatio: keyboardAspectRatio);
     WordGroup? word = currentKeyboard.value.getWord();
@@ -118,10 +125,12 @@ class Typer {
     _speakWord(word.getWord());
   }
 
+  // Removes the last character or word.
   void backSpace() {
     currentKeyboard.value.backspace();
   }
 
+  // Removes the last word.
   void removeLastWord() {
     if (words.isNotEmpty) {
       words.removeLast();
@@ -129,6 +138,7 @@ class Typer {
     }
   }
 
+  // Returns the last word typed.
   WordGroup? getLastWord() {
     if (words.isNotEmpty) {
       return words.last;
@@ -137,10 +147,12 @@ class Typer {
     }
   }
 
+  // Performs Text-to-Speech on the word.
   void _speakWord(Word word) {
     speakText(word.word);
   }
 
+  // Performs Text-to-Speech on the text.
   void speakText(String text) {
     _textToSpeech.stop();
     switch (currentKeyboard.value.languageCode) {
@@ -154,6 +166,7 @@ class Typer {
     _textToSpeech.speak(text);
   }
 
+  // Switches the language of the typer.
   void nextKeyboard() {
     int index = keyboards.indexOf(currentKeyboard.value);
     index++;

@@ -15,7 +15,7 @@ class WLDictionary {
   late final String wordsSource;
   final String language;
   late KDTree tree;
-  late final String _type;
+  late final WordType _type;
 
   // The aspect ratio of the keyboard: width/height
   double aspectRatio = 1.0;
@@ -28,37 +28,18 @@ class WLDictionary {
   //
   // Type = "mat" for regular words, "prefix" for prefixes.
   WLDictionary(this.wordLength, this.language, this._type) {
-    switch (_type) {
-      case "mat":
-        source = "assets/Lang/$language/words/tree_$wordLength.json";
-        wordsSource = "assets/Lang/$language/words/words_$wordLength.json";
-        break;
-      case "prefix":
-        source = "assets/Lang/$language/prefixes/tree_$wordLength.json";
-        wordsSource = "assets/Lang/$language/prefixes/words_$wordLength.json";
-        break;
-      default:
-        throw Exception("Invalid type: $_type");
-    }
+    source =
+        "assets/Lang/$language/${dirNameForWordType(_type)}/tree_$wordLength.json";
+    wordsSource =
+        "assets/Lang/$language/${dirNameForWordType(_type)}/words_$wordLength.json";
   }
 
   Future<void> makeTree() async {
-    // Import tree from matricies.
-
-    // Matrices are saved at "assets/Lang/he/mat_(this.wordLength).csv"
-    // The csv is in the following format:
-    // word, mat_1, mat_2, ...
-    // word => The word that the line represents (String).
-    // mat_1 => The x of the first point in the word => (1,1) (double).
-    // mat_2 => The y of the first point in the word => (2,1) (double).
-    // mat_3 => The x of the second point in the word => (1,2) (double).
-    // and so on...
-
-    // Read from the csv file.
-
+    // Import tree from the json file.
     final String str = await rootBundle.loadString(source);
     final Map<String, dynamic> json = jsonDecode(str);
 
+    // Import words from the json file.
     final String strWords = await rootBundle.loadString(wordsSource);
     final List<dynamic> wordsListDynamic = jsonDecode(strWords);
     words = wordsListDynamic.map((e) => e.toString()).toList();
@@ -120,5 +101,16 @@ class WLDictionary {
 
     // Return word
     return WordGroup.sorted(wordsList);
+  }
+}
+
+enum WordType { mat, prefix }
+
+String dirNameForWordType(WordType wordType) {
+  switch (wordType) {
+    case WordType.mat:
+      return "words";
+    case WordType.prefix:
+      return "prefixes";
   }
 }
