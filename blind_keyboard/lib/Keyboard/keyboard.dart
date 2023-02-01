@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:blind_keyboard/Dictionary/dictionary.dart';
 import 'package:blind_keyboard/Dictionary/word_group.dart';
 import 'package:blind_keyboard/Other%20Classes/point.dart';
@@ -100,6 +102,15 @@ class Keyboard {
 
   void wordUpdated() {
     typer.wordUpdatedAtKeyboard(keyboard: this);
+  }
+
+  void unload() {
+    loadingProgress.value = 0;
+    dictionary.unload();
+  }
+
+  void load() {
+    dictionary.load();
   }
 
   // # Static methods

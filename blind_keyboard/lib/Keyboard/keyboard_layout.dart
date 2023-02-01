@@ -35,7 +35,7 @@ class KeyboardLayout {
     for (int i = 0; i < layout.length; i++) {
       for (int j = 0; j < layout[i].length; j++) {
         if (layout[i][j] == letter) {
-          return Point(j / (layout[i].length + 1), i.toDouble());
+          return Point(j / (layout[i].length + 1), 1);
         }
       }
     }
@@ -58,7 +58,7 @@ class KeyboardLayout {
       for (int j = 0; j < layout[i].length; j++) {
         for (int k = 0; k < word.length; k++) {
           if (layout[i][j] == word[k]) {
-            points[k] = (Point(j / (layout[i].length + 1), i.toDouble()));
+            points[k] = (Point(j / (layout[i].length + 1), 1));
           }
         }
       }

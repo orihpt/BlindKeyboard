@@ -3,6 +3,7 @@ import 'package:blind_keyboard/Typer/typer.dart';
 import 'package:blind_keyboard/UI/Note%20Screen/note_screen_top_bar.dart';
 import 'package:blind_keyboard/UI/Style/AppColors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NoteScreen extends StatelessWidget {
@@ -21,7 +22,14 @@ class NoteScreen extends StatelessWidget {
             top: false,
             child: Column(children: [
               Container(color: AppColors.barColor, height: safeArea.top),
-              const NoteScreenTopBar(),
+              NoteScreenTopBar(
+                copyListener: (() {
+                  // Copy the text to the clipboard
+                  Clipboard.setData(ClipboardData(text: typer.text.value));
+                  typer.speakText(
+                      AppLocalizations.of(context)!.message_copy_to_clipboard);
+                }),
+              ),
               Container(color: AppColors.separatorColor, height: 2),
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -51,7 +59,7 @@ class NoteScreen extends StatelessWidget {
                   builder: (context, value, child) {
                     return KeyboardWidget(keyboard: value);
                   }),
-              Container(color: Colors.black, height: safeArea.bottom),
+              Container(color: Colors.black, height: safeArea.bottom + 15),
             ]),
           ),
         );

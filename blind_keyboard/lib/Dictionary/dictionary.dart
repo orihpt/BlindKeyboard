@@ -29,6 +29,9 @@ class LangDictionary {
   LangDictionary(this.language);
 
   Future<void> load() async {
+    loadProgress.value = 0;
+    isLoaded = false;
+
     // Load language information
     final String fullPath = "assets/Lang/$language/$language.json";
     final String jsonString = await rootBundle.loadString(fullPath);
@@ -69,8 +72,16 @@ class LangDictionary {
     print("Loaded $language dictionary");
   }
 
+  // Unload dictionary
+  void unload() {
+    dict = [];
+    prefixDict = [];
+    isLoaded = false;
+    loadProgress.value = 0;
+  }
+
   // Calc word from points
-  WordGroup calcWord(List<Point> points,
+  WordGroup? calcWord(List<Point> points,
       {double? aspectRatio, bool allowPrefix = true}) {
     // Check if dictionary is loaded
     if (!isLoaded) {
@@ -83,17 +94,22 @@ class LangDictionary {
       return WordGroup.nothing();
     }
 
+    List<WordGroup> words = [];
+
     // Get word length
     final int wordLength = points.length;
 
-    // Get dictionary
-    final WLDictionary dictionary = dict[wordLength - _minimumLengthWord];
+    // Search for word in dictionary
+    if (wordLength <= _maximumLengthWord && wordLength >= _minimumLengthWord) {
+      // Get dictionary
+      final WLDictionary dictionary = dict[wordLength - _minimumLengthWord];
 
-    // Get word
-    final WordGroup word =
-        dictionary.calcWord(points, aspectRatio: aspectRatio);
+      // Get word
+      final WordGroup word =
+          dictionary.calcWord(points, aspectRatio: aspectRatio);
 
-    List<WordGroup> words = [word];
+      words.add(word);
+    }
 
     // Prefixes
     if (allowPrefix &&
@@ -108,15 +124,15 @@ class LangDictionary {
             prefixDict[i - _minimumLengthPrefix];
         final WordGroup prefix =
             prefixDictionary.calcWord(points.sublist(0, i));
-        if (prefix.getWord().dist == null || prefix.getWord().dist! / i > 0.4) {
+        if (prefix.getWord().dist == null || prefix.getWord().dist! / i > 0.2) {
           continue;
         }
 
-        final WordGroup afterPrefixWord = calcWord(
+        final WordGroup? afterPrefixWord = calcWord(
             points.sublist(i, points.length),
             aspectRatio: aspectRatio,
             allowPrefix: false);
-        if (afterPrefixWord.getWord().dist == null) {
+        if (afterPrefixWord == null || afterPrefixWord.getWord().dist == null) {
           continue;
         }
 
@@ -124,6 +140,10 @@ class LangDictionary {
             WordGroup.combine(prefix, afterPrefixWord);
         words.add(combinedWord);
       }
+    }
+
+    if (words.isEmpty) {
+      return null;
     }
 
     WordGroup bestWord = WordGroup.flatWordsList(words);

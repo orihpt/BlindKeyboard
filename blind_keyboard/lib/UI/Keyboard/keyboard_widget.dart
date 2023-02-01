@@ -10,7 +10,7 @@ class KeyboardWidget extends StatelessWidget {
   // Global Key map
   final Map<String, GlobalKey> lettersKeys = {};
 
-  static const double verticalPadding = 20.0;
+  static const double verticalPadding = 25.0;
   static const double letterWidth = 20.0;
   static const double letterHeight = 32.0;
   static const double wordTypingHeight = 55.0;
@@ -138,7 +138,7 @@ class KeyboardWidget extends StatelessWidget {
                 controller: keyboard.typer.keyboardEditingController,
                 textAlign: TextAlign.center,
                 readOnly: true,
-                showCursor: true,
+                showCursor: false,
                 style: const TextStyle(color: Colors.white, fontSize: 40))));
   }
 

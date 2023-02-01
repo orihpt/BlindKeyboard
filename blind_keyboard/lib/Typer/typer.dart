@@ -26,16 +26,19 @@ class Typer {
   final TextToSpeech _textToSpeech = TextToSpeech();
 
   Typer() {
-    keyboards.add(Keyboard('he', this));
     keyboards.add(Keyboard('en', this));
+    keyboards.add(Keyboard('he', this));
     currentKeyboard = ValueNotifier<Keyboard>(keyboards[0]);
     _load();
   }
 
-  Future<void> _load() async {
+  void _load() {
     for (Keyboard keyboard in keyboards) {
-      await keyboard.dictionary.load();
+      if (keyboard != currentKeyboard.value) {
+        keyboard.unload();
+      }
     }
+    currentKeyboard.value.load();
   }
 
   void _updateText() {
@@ -135,10 +138,10 @@ class Typer {
   }
 
   void _speakWord(Word word) {
-    _speakText(word.word);
+    speakText(word.word);
   }
 
-  void _speakText(String text) {
+  void speakText(String text) {
     _textToSpeech.stop();
     switch (currentKeyboard.value.languageCode) {
       case 'he':
@@ -160,12 +163,13 @@ class Typer {
     currentKeyboard.value = keyboards[index];
     switch (currentKeyboard.value.languageCode) {
       case 'he':
-        _speakText("מקלדת עברית");
+        speakText("מקלדת עברית");
         break;
       case 'en':
-        _speakText("English keyboard");
+        speakText("English keyboard");
         break;
     }
     _updateText();
+    _load();
   }
 }
