@@ -20,16 +20,14 @@ class AssistantScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         bottom: true,
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(children: [
             SizedBox(
                 height: 100,
                 width: 100,
                 child: IconButton(
                   icon: Container(
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.blue),
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
                     child: const Icon(
                       Icons.arrow_back,
                       color: Colors.white,
@@ -47,29 +45,16 @@ class AssistantScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(AppLocalizations.of(context)!.info_title,
-                        style: const TextStyle(
-                            fontSize: 40,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold)),
+                        style: const TextStyle(fontSize: 40, color: Colors.black, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 15),
                     Text(AppLocalizations.of(context)!.info_description,
-                        style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold)),
+                        style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 15),
                     Text(AppLocalizations.of(context)!.info_howtouse_title,
-                        style: const TextStyle(
-                            fontSize: 30,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold)),
+                        style: const TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 15),
-                    Text(
-                        AppLocalizations.of(context)!.info_howtouse_description,
-                        style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold)),
+                    Text(AppLocalizations.of(context)!.info_howtouse_description,
+                        style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),

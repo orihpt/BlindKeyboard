@@ -48,23 +48,17 @@ class LangDictionary {
       final WLDictionary dictionary = WLDictionary(i, language, WordType.mat);
       await dictionary.makeTree();
       dict.add(dictionary);
-      loadProgress.value = 0.9 *
-          (i - _minimumLengthWord) /
-          (_maximumLengthWord - _minimumLengthWord);
+      loadProgress.value = 0.9 * (i - _minimumLengthWord) / (_maximumLengthWord - _minimumLengthWord);
     }
 
     // Make dictionary for prefixes
     if (_hasPrefixes) {
       prefixDict = [];
       for (int i = _minimumLengthPrefix; i <= _maximumLengthPrefix; i++) {
-        final WLDictionary dictionary =
-            WLDictionary(i, language, WordType.prefix);
+        final WLDictionary dictionary = WLDictionary(i, language, WordType.prefix);
         await dictionary.makeTree();
         prefixDict.add(dictionary);
-        loadProgress.value = 0.1 *
-                (i - _minimumLengthPrefix) /
-                (_maximumLengthPrefix - _minimumLengthPrefix) +
-            0.9;
+        loadProgress.value = 0.1 * (i - _minimumLengthPrefix) / (_maximumLengthPrefix - _minimumLengthPrefix) + 0.9;
       }
     }
 
@@ -82,8 +76,7 @@ class LangDictionary {
   }
 
   // Calc word from points
-  WordGroup? calcWord(List<Point> points,
-      {double? aspectRatio, bool allowPrefix = true}) {
+  WordGroup? calcWord(List<Point> points, {double? aspectRatio, bool allowPrefix = true}) {
     // Check if dictionary is loaded
     if (!isLoaded) {
       // Flutter warning
@@ -106,39 +99,28 @@ class LangDictionary {
       final WLDictionary dictionary = dict[wordLength - _minimumLengthWord];
 
       // Get word
-      final WordGroup word =
-          dictionary.calcWord(points, aspectRatio: aspectRatio);
+      final WordGroup word = dictionary.calcWord(points, aspectRatio: aspectRatio);
 
       words.add(word);
     }
 
     // Prefixes
-    if (allowPrefix &&
-        _hasPrefixes &&
-        wordLength - _minimumLengthWord - _minimumLengthPrefix >= 0) {
+    if (allowPrefix && _hasPrefixes && wordLength - _minimumLengthWord - _minimumLengthPrefix >= 0) {
       // This code section tries to find the best prefix for the word
       // If there is enough confidence in the prefix, it will add it to the words list
-      for (int i = _minimumLengthPrefix;
-          i <= min(_maximumLengthPrefix, wordLength - _minimumLengthWord);
-          i++) {
-        final WLDictionary prefixDictionary =
-            prefixDict[i - _minimumLengthPrefix];
-        final WordGroup prefix =
-            prefixDictionary.calcWord(points.sublist(0, i));
+      for (int i = _minimumLengthPrefix; i <= min(_maximumLengthPrefix, wordLength - _minimumLengthWord); i++) {
+        final WLDictionary prefixDictionary = prefixDict[i - _minimumLengthPrefix];
+        final WordGroup prefix = prefixDictionary.calcWord(points.sublist(0, i));
         if (prefix.getWord().dist == null || prefix.getWord().dist! / i > 0.2) {
           continue;
         }
 
-        final WordGroup? afterPrefixWord = calcWord(
-            points.sublist(i, points.length),
-            aspectRatio: aspectRatio,
-            allowPrefix: false);
+        final WordGroup? afterPrefixWord = calcWord(points.sublist(i, points.length), aspectRatio: aspectRatio, allowPrefix: false);
         if (afterPrefixWord == null || afterPrefixWord.getWord().dist == null) {
           continue;
         }
 
-        final WordGroup combinedWord =
-            WordGroup.combine(prefix, afterPrefixWord);
+        final WordGroup combinedWord = WordGroup.combine(prefix, afterPrefixWord);
         words.add(combinedWord);
       }
     }

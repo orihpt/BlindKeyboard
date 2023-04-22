@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:blind_keyboard/Dictionary/dictionary.dart';
 import 'package:blind_keyboard/Dictionary/word_group.dart';
 import 'package:blind_keyboard/Other%20Classes/point.dart';
@@ -38,7 +36,7 @@ class Keyboard {
   // Click on keyboard
   //
   // Please notice that the x,y coordinates are relative to the keyboard.
-  // The keyboard is Mx1 matrix, where M is the number of rows and N is the length of the longest row.
+  // The keyboard is Mx1 matrix, where M is the number of rows.
   // For more information about the keyboard coordinates, check the repo documentation.
   void click(double x, double y) {
     // Add point to points list
@@ -47,6 +45,7 @@ class Keyboard {
     wordUpdated();
   }
 
+  // Add space
   void addSpace({double? keyboardAspectRatio}) {
     typer.space(keyboardAspectRatio: keyboardAspectRatio);
     _word = WordGroup.nothing();
@@ -100,15 +99,18 @@ class Keyboard {
     return wordPoints.isNotEmpty;
   }
 
+  // Executes when the word is updated.
   void wordUpdated() {
     typer.wordUpdatedAtKeyboard(keyboard: this);
   }
 
+  // Removes the dictionary from memory.
   void unload() {
     loadingProgress.value = 0;
     dictionary.unload();
   }
 
+  // Loads the dictionary into memory.
   void load() {
     dictionary.load();
   }
@@ -117,10 +119,6 @@ class Keyboard {
 
   // Is language RTL
   static bool isRTL(String languageCode) {
-    return languageCode == 'he' ||
-        languageCode == 'ar' ||
-        languageCode == 'fa' ||
-        languageCode == 'ur' ||
-        languageCode == 'yi';
+    return languageCode == 'he' || languageCode == 'ar' || languageCode == 'fa' || languageCode == 'ur' || languageCode == 'yi';
   }
 }

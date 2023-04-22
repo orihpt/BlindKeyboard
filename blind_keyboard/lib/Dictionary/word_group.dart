@@ -23,18 +23,7 @@ class WordGroup {
 
   WordGroup.punctuation() {
     isPunctuation = true;
-    List<String> punctuationList = [
-      "👍",
-      "❤️",
-      "🥳",
-      "😃",
-      ".",
-      ",",
-      "!",
-      "?",
-      ":",
-      ";"
-    ];
+    List<String> punctuationList = ["👍", "❤️", "🥳", "😃", ".", ",", "!", "?", ":", ";"];
     // Create a word for each punctuation
     words = [];
     for (String punctuation in punctuationList) {
@@ -115,8 +104,7 @@ class WordGroup {
     return str;
   }
 
-  static WordGroup flatWordsList(List<WordGroup> wordsList,
-      {isPunctuation = false}) {
+  static WordGroup flatWordsList(List<WordGroup> wordsList, {isPunctuation = false}) {
     Map<String, Word> wordsMap = {};
     for (WordGroup wordsObj in wordsList) {
       for (Word wordObj in wordsObj.words) {

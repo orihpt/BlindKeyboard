@@ -52,10 +52,7 @@ class Typer {
       text.value = WordGroup.wordsListToString(words);
     }
     textEditingController.text = text.value;
-    keyboardEditingController.text =
-        currentKeyboard.value.getWord()?.getWord().word ??
-            getLastWord()?.getWord().word ??
-            '';
+    keyboardEditingController.text = currentKeyboard.value.getWord()?.getWord().word ?? getLastWord()?.getWord().word ?? '';
   }
 
   // Called when the word is updated.

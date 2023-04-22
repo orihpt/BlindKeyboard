@@ -38,11 +38,7 @@ class KeyboardWidget extends StatelessWidget {
                   if (value == 1) {
                     return Directionality(
                       textDirection: TextDirection.ltr,
-                      child: Column(children: [
-                        _createWordTyping(context),
-                        _createKeyboard(context),
-                        _createBottomBar(context)
-                      ]),
+                      child: Column(children: [_createWordTyping(context), _createKeyboard(context), _createBottomBar(context)]),
                     );
                   } else {
                     return _createLoadingWidget(context, value);
@@ -69,8 +65,7 @@ class KeyboardWidget extends StatelessWidget {
         child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTapDown: (TapDownDetails details) {
-              clicked(
-                  context, details.localPosition.dx, details.localPosition.dy);
+              clicked(context, details.localPosition.dx, details.localPosition.dy);
             },
             onPanEnd: (details) {
               var xDist = details.velocity.pixelsPerSecond.dx;
@@ -118,10 +113,7 @@ class KeyboardWidget extends StatelessWidget {
                                       height: letterHeight,
                                       child: Text(letter,
                                           textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold))));
+                                          style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold))));
                             }).toList()),
                       ],
                     );
@@ -156,8 +148,7 @@ class KeyboardWidget extends StatelessWidget {
                   },
                   iconSize: 40,
                   padding: const EdgeInsets.all(0),
-                  icon: const Icon(Icons.language,
-                      color: Colors.white, size: 40))),
+                  icon: const Icon(Icons.language, color: Colors.white, size: 40))),
 
           // Space bar
           Expanded(
@@ -166,17 +157,10 @@ class KeyboardWidget extends StatelessWidget {
                     space(context);
                   },
                   child: Container(
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
+                      decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(20.0))),
                       child: Center(
-                          child: Text(
-                              AppLocalizations.of(context)!.keyboard_space,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold)))))),
+                          child: Text(AppLocalizations.of(context)!.keyboard_space,
+                              style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)))))),
 
           SizedBox(
               width: 100,
@@ -187,8 +171,7 @@ class KeyboardWidget extends StatelessWidget {
                   },
                   iconSize: 40,
                   padding: const EdgeInsets.all(0),
-                  icon: const Icon(Icons.backspace,
-                      color: Colors.white, size: 40))),
+                  icon: const Icon(Icons.backspace, color: Colors.white, size: 40))),
         ]));
   }
 
@@ -214,15 +197,11 @@ class KeyboardWidget extends StatelessWidget {
 
   double matchingHeight(BuildContext context) {
     int rows = keyboard.layout.layout.length;
-    return rows * letterHeight +
-        (rows + 1) * verticalPadding +
-        wordTypingHeight +
-        bottomBarHeight;
+    return rows * letterHeight + (rows + 1) * verticalPadding + wordTypingHeight + bottomBarHeight;
   }
 
   void space(BuildContext context) {
-    keyboard.addSpace(
-        keyboardAspectRatio: _keyboardHeight(context) / context.size!.width);
+    keyboard.addSpace(keyboardAspectRatio: _keyboardHeight(context) / context.size!.width);
   }
 
   void backspace() {

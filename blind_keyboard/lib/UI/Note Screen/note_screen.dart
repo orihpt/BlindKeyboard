@@ -1,7 +1,7 @@
 import 'package:blind_keyboard/UI/Keyboard/keyboard_widget.dart';
 import 'package:blind_keyboard/Typer/typer.dart';
 import 'package:blind_keyboard/UI/Note%20Screen/note_screen_top_bar.dart';
-import 'package:blind_keyboard/UI/Style/AppColors.dart';
+import 'package:blind_keyboard/UI/Style/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -26,8 +26,7 @@ class NoteScreen extends StatelessWidget {
                 copyListener: (() {
                   // Copy the text to the clipboard
                   Clipboard.setData(ClipboardData(text: typer.text.value));
-                  typer.speakText(
-                      AppLocalizations.of(context)!.message_copy_to_clipboard);
+                  typer.speakText(AppLocalizations.of(context)!.message_copy_to_clipboard);
                 }),
               ),
               Container(color: AppColors.separatorColor, height: 2),
@@ -39,8 +38,7 @@ class NoteScreen extends StatelessWidget {
                   maxLines: null,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText:
-                        AppLocalizations.of(context)!.placeholder_type_here,
+                    hintText: AppLocalizations.of(context)!.placeholder_type_here,
                   ),
                   readOnly: true,
                   showCursor: true,
@@ -48,9 +46,7 @@ class NoteScreen extends StatelessWidget {
                     fontSize: 25,
                     color: Colors.black,
                   ),
-                  textAlign: Directionality.of(context) == TextDirection.rtl
-                      ? TextAlign.right
-                      : TextAlign.left,
+                  textAlign: Directionality.of(context) == TextDirection.rtl ? TextAlign.right : TextAlign.left,
                 ),
               ),
               const Spacer(flex: 1),

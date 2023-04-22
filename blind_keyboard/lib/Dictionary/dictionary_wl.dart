@@ -28,10 +28,8 @@ class WLDictionary {
   //
   // Type = "mat" for regular words, "prefix" for prefixes.
   WLDictionary(this.wordLength, this.language, this._type) {
-    source =
-        "assets/Lang/$language/${dirNameForWordType(_type)}/tree_$wordLength.json";
-    wordsSource =
-        "assets/Lang/$language/${dirNameForWordType(_type)}/words_$wordLength.json";
+    source = "assets/Lang/$language/${dirNameForWordType(_type)}/tree_$wordLength.json";
+    wordsSource = "assets/Lang/$language/${dirNameForWordType(_type)}/words_$wordLength.json";
   }
 
   Future<void> makeTree() async {
@@ -63,8 +61,7 @@ class WLDictionary {
     tree = KDTree.fromJson(json);
     tree.metric = distance;
 
-    print(
-        "Done creating tree for $_type with $wordLength letter words in $language");
+    print("Done creating tree for $_type with $wordLength letter words in $language");
   }
 
   // Calculate word from points
