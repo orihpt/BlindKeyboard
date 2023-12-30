@@ -30,7 +30,8 @@ class NoteScreen extends StatelessWidget {
                 }),
               ),
               Container(color: AppColors.separatorColor, height: 2),
-              Padding(
+              Expanded(
+                  child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
                   controller: typer.textEditingController,
@@ -46,9 +47,10 @@ class NoteScreen extends StatelessWidget {
                     fontSize: 25,
                     color: Colors.black,
                   ),
+                  scrollPhysics: const BouncingScrollPhysics(),
                   textAlign: Directionality.of(context) == TextDirection.rtl ? TextAlign.right : TextAlign.left,
                 ),
-              ),
+              )),
               const Spacer(flex: 1),
               ValueListenableBuilder(
                   valueListenable: typer.currentKeyboard,
