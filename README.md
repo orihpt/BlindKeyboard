@@ -23,7 +23,7 @@ To speed up the search, I pre-made KD-trees for each word length using Matlab. T
 
 For more information about KD-trees, see [Wikipedia](https://en.wikipedia.org/wiki/K-d_tree).
 
-The KD-trees are stored in assets/Lang/[he for Hebrew, en for English]/words/tree_[Word Length].json.
+The KD-trees are stored in `assets/Lang/[he for Hebrew, en for English]/words/tree_[Word Length].json`.
 
 ### Hebrew Keyboard Challenges
 Implementing the Hebrew keyboard took more effort than the English keyboard.
