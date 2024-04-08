@@ -3,6 +3,7 @@ This is an open-source project that demonstrates how a keyboard for blind people
 The simple idea is that the system remembers the coordinates of where on the keyboard the user has pressed and then uses that to predict what the user is typing.
 
 ## Demo
+The keyboard tries to guess the word I typed even when I don't exactly tap the letters.
 As you can see, the keyboard can't always guess the word I mean to type. When it gets the word wrong, I just swipe down for the next word suggestion.
 
 [Hebrew Keyboard Demo](https://github.com/orihpt/BlindKeyboard/assets/52978143/ca90be87-7d48-43b2-aeb6-715273b635b8)
